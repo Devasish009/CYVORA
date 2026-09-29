@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore India - TravelBharat</title>
+  <meta name="description" content="Search and filter destinations across India by state, region, and category.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'explore' }) %>
+
+    <section class="page-hero" style="background-image:url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=80');">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label">Search & Discover</span>
+        <h1>Explore <span class="colored">Incredible India</span></h1>
+        <p>Find destinations by name, state, region, or category.</p>
+      </div>
+    </section>
+
+    <div class="subpage-content">
+      <form class="explore-filter-bar" method="GET" action="/explore">
+        <div class="efb-group">
+          <label>Search</label>
+          <input type="text" name="q" value="<%= filters.q %>" placeholder="Taj Mahal, Manali, Hampi...">
+        </div>
+        <div class="efb-group">
+          <label>Category</label>
+          <select name="category">
+            <option value="">All Categories</option>
+            <% categories.forEach(cat => { %>
+              <option value="<%= cat %>" <%= filters.category === cat ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="efb-group">
+          <label>State / UT</label>
+          <select name="state">
+            <option value="">All States</option>
+            <% allStates.forEach(s => { %>
+              <option value="<%= s.name %>" <%= filters.state === s.name ? 'selected' : '' %>><%= s.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="efb-group">
+          <label>Region</label>
+          <select name="region">
+            <option value="">All Regions</option>
+            <% regions.forEach(item => { %>
+              <option value="<%= item %>" <%= filters.region === item ? 'selected' : '' %>><%= item %></option>
+            <% }) %>
+          </select>
+        </div>
+        <button type="submit" class="efb-search-btn">Search</button>
+        <a href="/explore" class="efb-clear-btn">Clear</a>
+      </form>
+
+      <div class="explore-results-count">
+        <strong><%= destinations.length %></strong> destination<%= destinations.length !== 1 ? 's' : '' %> found
+        <% if (filters.q || filters.category || filters.state || filters.region) { %>
+          <span class="filter-applied-badge">Filtered</span>
+        <% } %>
+      </div>
+
+      <div class="dest-grid explore-dest-grid">
+        <% if (destinations.length === 0) { %>
+          <div class="no-results-msg">
+            <p>No destinations found. Try a broader search.</p>
+            <a href="/explore" class="btn-gold">View All Destinations</a>
+          </div>
+        <% } else { %>
+          <% destinations.forEach(d => { %>
+            <a class="dest-card" href="<%= d.detailUrl %>">
+              <img src="<%= d.image_url %>" alt="<%= d.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+              <div class="dest-card-info">
+                <h4><%= d.name %></h4>
+                <span class="state-badge"><%= d.state_name %></span>
+                <div class="category-tag"><%= d.category %></div>
+                <p class="dest-desc"><%= d.description ? d.description.substring(0, 90) + '...' : '' %></p>
+                <div class="dest-meta">
+                  <span>Best: <%= d.best_time || 'Flexible' %></span>
+                  <span>Rating: <%= d.rating || 'N/A' %></span>
+                </div>
+                <% if (d.entry_fee) { %>
+                  <span class="dest-fee">Entry: <%= d.entry_fee %></span>
+                <% } %>
+              </div>
+            </a>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "travelbharat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "seed": "node db/seed.js",
+    "restore-images": "node db/restore-remote-image-urls.js",
+    "download-images": "node db/download-local-images.js",
+    "use-unsplash-images": "node db/use-unsplash-image-urls.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "pg": "^8.20.0"
+  }
+}

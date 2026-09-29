@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "../../.sixth"
+		},
+		{
+			"path": "../../db"
+		},
+		{
+			"path": "../../node_modules"
+		},
+		{
+			"path": "../../public"
+		},
+		{
+			"path": "../../public/css"
+		},
+		{
+			"path": "../../public/img"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../../public/js"
+		},
+		{
+			"path": "../partials"
+		}
+	],
+	"settings": {}
+}

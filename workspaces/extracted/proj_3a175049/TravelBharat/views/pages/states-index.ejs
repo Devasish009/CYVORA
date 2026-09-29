@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All States & UTs - TravelBharat</title>
+  <meta name="description" content="Explore all 28 states and 8 union territories of India with TravelBharat.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'states' }) %>
+
+    <section class="page-hero" style="background-image:url('https://images.unsplash.com/photo-1599661046289-e31897846e41?w=1920&q=80');">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label">Explore India</span>
+        <h1>All <span class="colored">States & Union Territories</span></h1>
+        <p>Browse the full map of India by type, region, and local highlights.</p>
+      </div>
+    </section>
+
+    <div class="subpage-content">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-btn active" onclick="filterStates('all', this)">All (36)</button>
+        <button class="filter-btn" onclick="filterStates('state', this)">States (28)</button>
+        <button class="filter-btn" onclick="filterStates('union_territory', this)">Union Territories (8)</button>
+      </div>
+
+      <div class="filter-tabs" id="regionTabs">
+        <button class="filter-btn active" onclick="filterRegion('all', this)">All Regions</button>
+        <% regions.forEach(region => { %>
+          <button class="filter-btn" onclick="filterRegion('<%= region %>', this)"><%= region %></button>
+        <% }) %>
+      </div>
+
+      <div class="states-search-wrap">
+        <input
+          type="text"
+          id="stateSearch"
+          placeholder="Search states and UTs..."
+          oninput="searchStates(this.value)"
+          class="states-search-input"
+        >
+      </div>
+
+      <div class="subpage-section-header">
+        <span class="label">Collections</span>
+        <h2>States & <span class="colored">Union Territories</span></h2>
+      </div>
+
+      <div class="states-full-grid">
+        <% [...states, ...uts].forEach(item => { %>
+          <article
+            class="state-full-card"
+            data-type="<%= item.type %>"
+            data-region="<%= item.region %>"
+            data-name="<%= item.name.toLowerCase() %>"
+          >
+            <div class="sfc-img-wrap">
+              <img src="<%= item.image_url %>" alt="<%= item.name %>" loading="lazy" data-fallback="/img/state-placeholder.svg">
+              <span class="sfc-type-badge <%= item.type === 'state' ? 'state-badge-tag' : 'ut-badge-tag' %>">
+                <%= item.type === 'state' ? 'State' : 'UT' %>
+              </span>
+            </div>
+            <div class="sfc-body">
+              <h3><%= item.name %></h3>
+              <p class="sfc-capital">Capital: <%= item.capital %></p>
+              <p class="sfc-region">Region: <%= item.region %> India</p>
+              <p class="sfc-lang">Languages: <%= item.language %></p>
+              <p class="sfc-time">Best time: <%= item.best_time %></p>
+              <p class="sfc-famous">Highlights: <%= item.famous_for %></p>
+              <div class="sfc-footer">
+                <span class="sfc-dest-count"><%= item.destinations_count %>+ destinations</span>
+                <a href="/states/<%= item.slug %>" class="sfc-explore-btn">Explore -></a>
+              </div>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </div>
+
+  <script>
+    let activeType = 'all';
+    let activeRegion = 'all';
+
+    function applyFilters(query = document.getElementById('stateSearch').value.toLowerCase()) {
+      document.querySelectorAll('.state-full-card').forEach(card => {
+        const matchesType = activeType === 'all' || card.dataset.type === activeType;
+        const matchesRegion = activeRegion === 'all' || card.dataset.region === activeRegion;
+        const matchesSearch = card.dataset.name.includes(query);
+        card.style.display = matchesType && matchesRegion && matchesSearch ? 'flex' : 'none';
+      });
+    }
+
+    function filterStates(type, btn) {
+      activeType = type;
+      document.querySelectorAll('#filterTabs .filter-btn').forEach(button => button.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    }
+
+    function filterRegion(region, btn) {
+      activeRegion = region;
+      document.querySelectorAll('#regionTabs .filter-btn').forEach(button => button.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    }
+
+    function searchStates(value) {
+      applyFilters(value.toLowerCase());
+    }
+  </script>
+</body>
+</html>

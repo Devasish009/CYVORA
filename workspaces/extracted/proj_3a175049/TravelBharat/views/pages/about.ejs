@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About – TravelBharat</title>
+  <meta name="description" content="About TravelBharat — your gateway to exploring the incredible beauty of India.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'about' }) %>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image:url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80');">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label">Our Story</span>
+        <h1>About <span class="colored">TravelBharat</span></h1>
+        <p>Your gateway to the incredible beauty, heritage and diversity of India</p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="subpage-content">
+
+      <!-- Mission -->
+      <div class="about-mission-grid">
+        <div class="about-text-col">
+          <span class="label">Our Mission</span>
+          <h2>Bringing <span class="colored">India</span> to You</h2>
+          <p>TravelBharat is a centralized tourism information platform providing state-wise and destination-wise details of tourist spots across India. From the majestic Taj Mahal to the serene backwaters of Kerala — we cover every corner of the country.</p>
+          <p>Our platform covers all <strong>28 states and 8 union territories</strong>, featuring curated destinations with detailed information including best time to visit, entry fees, historical significance, and travel tips.</p>
+          <div class="about-tags">
+            <span class="about-tag">36 States & UTs</span>
+            <span class="about-tag">500+ Destinations</span>
+            <span class="about-tag">6 Categories</span>
+            <span class="about-tag">Heritage</span>
+            <span class="about-tag">Nature</span>
+            <span class="about-tag">Adventure</span>
+          </div>
+        </div>
+        <div class="about-img-col">
+          <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80" alt="Taj Mahal" class="about-hero-img">
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="about-stats-row">
+        <div class="about-stat-card glass"><div class="about-stat-num" data-count="36">0</div><div class="about-stat-lbl">States & UTs</div></div>
+        <div class="about-stat-card glass"><div class="about-stat-num" data-count="500">0</div><div class="about-stat-lbl">Destinations</div></div>
+        <div class="about-stat-card glass"><div class="about-stat-num" data-count="6">0</div><div class="about-stat-lbl">Categories</div></div>
+        <div class="about-stat-card glass"><div class="about-stat-num" data-count="24">0</div><div class="about-stat-lbl">Gallery Photos</div></div>
+      </div>
+
+      <!-- Features -->
+      <div class="subpage-section-header">
+        <span class="label">What We Offer</span>
+        <h2>Platform <span class="colored">Features</span></h2>
+      </div>
+      <div class="about-features-grid">
+        <div class="about-feature-card glass"><span class="af-icon">🗺️</span><h4>All 36 States & UTs</h4><p>Complete coverage of every state and union territory of India with localised details.</p></div>
+        <div class="about-feature-card glass"><span class="af-icon">🔍</span><h4>Smart Search</h4><p>Search destinations by name, state or category — find exactly what you need in seconds.</p></div>
+        <div class="about-feature-card glass"><span class="af-icon">📸</span><h4>Visual Gallery</h4><p>A stunning photo gallery covering temples, beaches, mountains, wildlife and more.</p></div>
+        <div class="about-feature-card glass"><span class="af-icon">🔐</span><h4>Secure Auth</h4><p>Encrypted login and registration using bcrypt and PostgreSQL-backed sessions.</p></div>
+        <div class="about-feature-card glass"><span class="af-icon">🗄️</span><h4>Live Database</h4><p>All data powered by PostgreSQL — real-time, reliable and easily expandable.</p></div>
+        <div class="about-feature-card glass"><span class="af-icon">📱</span><h4>Responsive Design</h4><p>Fully responsive glassmorphism UI that works beautifully on all screen sizes.</p></div>
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="subpage-section-header">
+        <span class="label">Built With</span>
+        <h2>Technology <span class="colored">Stack</span></h2>
+      </div>
+      <div class="tech-stack-grid">
+        <div class="tech-card glass"><span>⚡</span><h5>Node.js</h5><p>Backend Runtime</p></div>
+        <div class="tech-card glass"><span>🚀</span><h5>Express.js</h5><p>Web Framework</p></div>
+        <div class="tech-card glass"><span>🐘</span><h5>PostgreSQL</h5><p>Database</p></div>
+        <div class="tech-card glass"><span>🎨</span><h5>EJS</h5><p>Templating Engine</p></div>
+        <div class="tech-card glass"><span>🔒</span><h5>bcryptjs</h5><p>Password Hashing</p></div>
+        <div class="tech-card glass"><span>🍪</span><h5>Express Session</h5><p>Auth Sessions</p></div>
+      </div>
+
+      <!-- Acknowledgement -->
+      <div class="about-ack glass">
+        <span class="ack-emoji">🎓</span>
+        <div>
+          <h3>Built with <span class="colored">Unified Mentor</span></h3>
+          <p>This platform was developed as an internship project with Unified Mentor — showcasing full-stack web development with Node.js, Express, PostgreSQL and modern UI design principles.</p>
+        </div>
+      </div>
+
+    </div><!-- /subpage-content -->
+
+    <%- include('../partials/footer') %>
+  </div>
+
+  <script>
+    const counters = document.querySelectorAll('.about-stat-num[data-count]');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.count);
+          let current = 0;
+          const inc = target / 50;
+          const timer = setInterval(() => {
+            current = Math.min(current + inc, target);
+            entry.target.textContent = Math.floor(current) + '+';
+            if (current >= target) clearInterval(timer);
+          }, 30);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => obs.observe(c));
+  </script>
+</body>
+</html>

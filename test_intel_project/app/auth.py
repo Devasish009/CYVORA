@@ -1,0 +1,1 @@
+def authenticate(): return True

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelBharat – Explore India</title>
+  <meta name="description" content="Discover the soul of India, one state at a time. Explore stunning destinations across 28 states and 8 union territories.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body { background: #0a0a0a; }
+
+    .india-map-container {
+      width: 55vmin;
+      height: auto;
+      position: relative;
+    }
+
+    #mapSvg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.15));
+    }
+
+    .state-path {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      animation: drawState 3s ease forwards;
+      filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
+    }
+
+    @keyframes drawState {
+      to { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    /* Stagger each state's animation */
+    .state-path:nth-child(1)  { animation-delay: 0.0s; }
+    .state-path:nth-child(2)  { animation-delay: 0.05s; }
+    .state-path:nth-child(3)  { animation-delay: 0.1s; }
+    .state-path:nth-child(4)  { animation-delay: 0.15s; }
+    .state-path:nth-child(5)  { animation-delay: 0.2s; }
+    .state-path:nth-child(6)  { animation-delay: 0.25s; }
+    .state-path:nth-child(7)  { animation-delay: 0.3s; }
+    .state-path:nth-child(8)  { animation-delay: 0.35s; }
+    .state-path:nth-child(9)  { animation-delay: 0.4s; }
+    .state-path:nth-child(10) { animation-delay: 0.45s; }
+    .state-path:nth-child(11) { animation-delay: 0.5s; }
+    .state-path:nth-child(12) { animation-delay: 0.55s; }
+    .state-path:nth-child(13) { animation-delay: 0.6s; }
+    .state-path:nth-child(14) { animation-delay: 0.65s; }
+    .state-path:nth-child(15) { animation-delay: 0.7s; }
+    .state-path:nth-child(16) { animation-delay: 0.75s; }
+    .state-path:nth-child(17) { animation-delay: 0.8s; }
+    .state-path:nth-child(18) { animation-delay: 0.85s; }
+    .state-path:nth-child(19) { animation-delay: 0.9s; }
+    .state-path:nth-child(20) { animation-delay: 0.95s; }
+    .state-path:nth-child(21) { animation-delay: 1.0s; }
+    .state-path:nth-child(22) { animation-delay: 1.05s; }
+    .state-path:nth-child(23) { animation-delay: 1.1s; }
+    .state-path:nth-child(24) { animation-delay: 1.15s; }
+    .state-path:nth-child(25) { animation-delay: 1.2s; }
+    .state-path:nth-child(26) { animation-delay: 1.25s; }
+    .state-path:nth-child(27) { animation-delay: 1.3s; }
+    .state-path:nth-child(28) { animation-delay: 1.35s; }
+    .state-path:nth-child(29) { animation-delay: 1.4s; }
+    .state-path:nth-child(30) { animation-delay: 1.45s; }
+    .state-path:nth-child(31) { animation-delay: 1.5s; }
+    .state-path:nth-child(32) { animation-delay: 1.55s; }
+    .state-path:nth-child(33) { animation-delay: 1.6s; }
+    .state-path:nth-child(34) { animation-delay: 1.65s; }
+
+    /* Subtle glow fill after draw */
+    .state-path.filled {
+      fill: rgba(255, 215, 0, 0.04);
+      stroke: #FFD700;
+      stroke-width: 0.6;
+      transition: fill 0.8s ease, stroke 0.5s ease;
+    }
+    .state-path.filled:hover {
+      fill: rgba(255, 215, 0, 0.15);
+      stroke: #20E3B2;
+      stroke-width: 1.2;
+      cursor: pointer;
+    }
+
+    /* City dot overlays inside SVG */
+    .city-dot {
+      opacity: 0;
+      transform: scale(0);
+      transform-origin: center;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: auto;
+    }
+    .city-dot.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .city-dot:hover {
+      cursor: pointer;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    }
+    @keyframes cityPulse {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.8); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-page" id="splashPage">
+    <!-- Background -->
+    <div class="splash-bg">
+      <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80" alt="India" id="splashBgImg">
+    </div>
+
+    <!-- Particles -->
+    <div id="particles"></div>
+
+    <!-- Map container -->
+    <div class="splash-container" id="splashContainer">
+      <div class="india-map-container" id="indiaMap">
+        <!-- Accurate India map loaded via fetch -->
+        <div id="mapHolder"></div>
+      </div>
+    </div>
+
+    <!-- Logo (appears on scroll) -->
+    <div class="splash-logo" id="splashLogo">
+      <h1>
+        <span class="travel">Travel</span><span class="bharat">Bharat</span>
+      </h1>
+      <p class="tagline">Explore India, State by State</p>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <script>
+    // Load the accurate India map SVG
+    fetch('/img/india-map.svg')
+      .then(r => r.text())
+      .then(svgText => {
+        document.getElementById('mapHolder').innerHTML = svgText;
+        const svg = document.getElementById('mapSvg');
+
+        const cityPoints = [
+          { name: 'Srinagar', cx: 132, cy: 70, color: '#38BDF8' },
+          { name: 'Shimla / Manali', cx: 185, cy: 142, color: '#34D399' },
+          { name: 'Amritsar', cx: 140, cy: 145, color: '#F59E0B' },
+          { name: 'Dehradun / Rishikesh', cx: 218, cy: 172, color: '#F43F5E' },
+          { name: 'Delhi (NCR)', cx: 186, cy: 210, color: '#FF6B6B' },
+          { name: 'Jaipur', cx: 158, cy: 235, color: '#FBBF24' },
+          { name: 'Ahmedabad', cx: 92, cy: 342, color: '#EC4899' },
+          { name: 'Agra', cx: 200, cy: 232, color: '#FF6B6B' },
+          { name: 'Lucknow', cx: 265, cy: 245, color: '#56CCF2' },
+          { name: 'Varanasi', cx: 315, cy: 272, color: '#F59E0B' },
+          { name: 'Bhopal', cx: 215, cy: 320, color: '#8B5CF6' },
+          { name: 'Patna', cx: 365, cy: 270, color: '#6366F1' },
+          { name: 'Ranchi', cx: 360, cy: 330, color: '#14B8A6' },
+          { name: 'Raipur', cx: 295, cy: 385, color: '#10B981' },
+          { name: 'Kolkata', cx: 412, cy: 348, color: '#20E3B2' },
+          { name: 'Bhubaneswar / Puri', cx: 362, cy: 412, color: '#06B6D4' },
+          { name: 'Guwahati', cx: 480, cy: 260, color: '#FF6B6B' },
+          { name: 'Shillong', cx: 484, cy: 283, color: '#38BDF8' },
+          { name: 'Gangtok', cx: 425, cy: 235, color: '#A855F7' },
+          { name: 'Itanagar / Tawang', cx: 535, cy: 225, color: '#FB923C' },
+          { name: 'Mumbai', cx: 112, cy: 435, color: '#FBBF24' },
+          { name: 'Panaji (Goa)', cx: 122, cy: 512, color: '#EAB308' },
+          { name: 'Hyderabad', cx: 237, cy: 457, color: '#56CCF2' },
+          { name: 'Visakhapatnam', cx: 295, cy: 470, color: '#F97316' },
+          { name: 'Tirupati', cx: 235, cy: 545, color: '#EAB308' },
+          { name: 'Bengaluru', cx: 195, cy: 555, color: '#A855F7' },
+          { name: 'Chennai', cx: 245, cy: 565, color: '#FFD700' },
+          { name: 'Kochi', cx: 166, cy: 615, color: '#FB7185' }
+        ];
+
+        cityPoints.forEach(city => {
+          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dot.setAttribute('cx', city.cx);
+          dot.setAttribute('cy', city.cy);
+          dot.setAttribute('r', '7');
+          dot.setAttribute('fill', city.color);
+          dot.setAttribute('stroke', '#ffffff');
+          dot.setAttribute('stroke-width', '1.5');
+          dot.setAttribute('class', 'city-dot');
+          const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+          title.textContent = city.name;
+          dot.appendChild(title);
+          svg.appendChild(dot);
+        });
+
+        // After drawing completes, add subtle fill
+        setTimeout(() => {
+          document.querySelectorAll('.state-path').forEach(p => {
+            p.classList.add('filled');
+          });
+        }, 4000);
+
+        // Show city dots
+        setTimeout(() => {
+          document.querySelectorAll('.city-dot').forEach((dot, i) => {
+            setTimeout(() => dot.classList.add('visible'), i * 150);
+          });
+        }, 3000);
+      });
+
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 40; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 4 + 's';
+      particle.style.animationDuration = (3 + Math.random() * 3) + 's';
+      const colors = ['#FFD700', '#20E3B2', '#FF6B6B', '#56CCF2', '#FBBF24'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particlesContainer.appendChild(particle);
+    }
+
+    // Scroll handling - zoom map & reveal logo
+    const splashPage = document.getElementById('splashPage');
+    const indiaMap = document.getElementById('indiaMap');
+    const splashLogo = document.getElementById('splashLogo');
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    const splashBgImg = document.getElementById('splashBgImg');
+    
+    let ticking = false;
+    
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const vh = window.innerHeight;
+          const progress = Math.min(scrollY / (vh * 1.5), 1);
+          
+          // Zoom the map (1 → 6x scale)
+          const scale = 1 + progress * 5;
+          const opacity = 1 - Math.max(0, (progress - 0.4) * 2.5);
+          indiaMap.style.transform = `scale(${scale})`;
+          indiaMap.style.opacity = opacity;
+          
+          // Fade background
+          splashBgImg.style.opacity = 0.3 + progress * 0.3;
+          
+          // Show logo when map is zoomed enough
+          if (progress > 0.5) {
+            splashLogo.classList.add('visible');
+          } else {
+            splashLogo.classList.remove('visible');
+          }
+          
+          // Hide scroll indicator
+          if (progress > 0.1) {
+            scrollIndicator.style.opacity = 1 - progress * 3;
+          }
+          
+          // Navigate to login when fully scrolled
+          if (progress >= 0.95) {
+            splashLogo.style.transform = 'translate(-50%, -50%) scale(1.1)';
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 600);
+          }
+          
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+</body>
+</html>

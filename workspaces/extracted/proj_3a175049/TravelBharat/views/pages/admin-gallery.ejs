@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Gallery - TravelBharat</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="admin-page">
+    <%- include('../partials/admin-nav', { active: 'gallery' }) %>
+
+    <main class="admin-shell">
+      <section class="admin-header">
+        <div>
+          <span class="label">Module</span>
+          <h1>Gallery</h1>
+          <p>Keep the visual storytelling layer fresh for gallery and destination pages.</p>
+        </div>
+      </section>
+
+      <% if (success) { %><div class="auth-alert success"><%= success %></div><% } %>
+      <% if (error) { %><div class="auth-alert error"><%= error %></div><% } %>
+
+      <section class="admin-panel glass">
+        <div class="admin-panel-head">
+          <h2>Add Gallery Image</h2>
+        </div>
+        <form class="admin-form-grid" action="/admin/gallery" method="POST">
+          <input name="title" placeholder="Title" required>
+          <input name="location" placeholder="Location">
+          <input name="state" placeholder="State">
+          <select name="category">
+            <% categories.forEach(category => { %>
+              <option value="<%= category %>"><%= category %></option>
+            <% }) %>
+          </select>
+          <input name="image_url" placeholder="Image URL" required>
+          <button class="btn-gold admin-submit" type="submit">Add Image</button>
+        </form>
+      </section>
+
+      <section class="admin-panel glass">
+        <div class="admin-panel-head">
+          <h2>Gallery Library</h2>
+        </div>
+        <div class="admin-card-list">
+          <% images.forEach(item => { %>
+            <form class="admin-item-card" action="/admin/gallery/<%= item.id %>/update" method="POST">
+              <div class="admin-item-head">
+                <h3><%= item.title %></h3>
+                <div class="admin-inline-actions">
+                  <button type="submit" class="btn-outline admin-small-btn">Save</button>
+                </div>
+              </div>
+              <div class="admin-form-grid compact">
+                <input name="title" value="<%= item.title %>" required>
+                <input name="location" value="<%= item.location || '' %>">
+                <input name="state" value="<%= item.state || '' %>">
+                <select name="category">
+                  <% categories.forEach(category => { %>
+                    <option value="<%= category %>" <%= category === item.category ? 'selected' : '' %>><%= category %></option>
+                  <% }) %>
+                </select>
+                <input name="image_url" value="<%= item.image_url || '' %>">
+              </div>
+            </form>
+            <form action="/admin/gallery/<%= item.id %>/delete" method="POST" class="admin-delete-form">
+              <button type="submit" class="admin-delete-btn">Delete <%= item.title %></button>
+            </form>
+          <% }) %>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

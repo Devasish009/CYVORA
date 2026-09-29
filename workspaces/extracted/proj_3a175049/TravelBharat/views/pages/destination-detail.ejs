@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= destination.name %> - TravelBharat</title>
+  <meta name="description" content="Plan your visit to <%= destination.name %> in <%= destination.state_name %> with TravelBharat.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'explore' }) %>
+
+    <section class="page-hero" style="background-image:url('<%= destination.image_url %>');">
+      <img src="<%= destination.image_url %>" alt="" style="display:none;" data-hero-target=".page-hero" data-fallback="/img/dest-placeholder.svg">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label"><%= destination.category %></span>
+        <h1><%= destination.name %></h1>
+        <p><%= destination.state_name %> • <%= destination.best_time || 'Travel anytime' %></p>
+      </div>
+    </section>
+
+    <div class="subpage-content">
+      <div class="about-mission-grid">
+        <div class="about-text-col">
+          <span class="label">Destination Guide</span>
+          <h2>Plan Your <span class="colored">Visit</span></h2>
+          <p><%= destination.description %></p>
+          <div class="about-tags">
+            <a href="/states/<%= destination.stateSlug %>" class="about-tag"><%= destination.state_name %></a>
+            <a href="/categories/<%= destination.category.toLowerCase() %>" class="about-tag"><%= destination.category %></a>
+            <span class="about-tag">Location: <%= destination.location || destination.state_name %></span>
+            <span class="about-tag">Rating: <%= destination.rating || 'N/A' %></span>
+            <span class="about-tag">Best Time: <%= destination.best_time || 'Flexible' %></span>
+            <span class="about-tag">Entry: <%= destination.entry_fee || 'Check locally' %></span>
+          </div>
+          <div style="margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap;">
+            <a href="<%= destination.mapsUrl %>" target="_blank" rel="noreferrer" class="btn-gold">Open in Maps</a>
+            <a href="/explore?state=<%= encodeURIComponent(destination.state_name) %>" class="btn-outline">More in <%= destination.state_name %></a>
+          </div>
+        </div>
+        <div class="about-img-col">
+          <img src="<%= destination.image_url %>" alt="<%= destination.name %>" class="about-hero-img" data-fallback="/img/dest-placeholder.svg">
+        </div>
+      </div>
+
+      <% if (galleryImages.length) { %>
+        <div class="subpage-section-header">
+          <span class="label">Visuals</span>
+          <h2><span class="colored"><%= destination.name %></span> Gallery</h2>
+        </div>
+        <div class="gallery-masonry">
+          <% galleryImages.forEach(image => { %>
+            <a class="gallery-item" href="/gallery?category=<%= encodeURIComponent(image.category) %>">
+              <img src="<%= image.image_url %>" alt="<%= image.title %>" loading="lazy">
+              <div class="gallery-item-overlay">
+                <h4><%= image.title %></h4>
+                <span><%= image.location %>, <%= image.state %></span>
+                <span class="gal-cat-tag"><%= image.category %></span>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <% if (nearby.length) { %>
+        <div class="subpage-section-header">
+          <span class="label">Nearby</span>
+          <h2>More in <span class="colored"><%= destination.state_name %></span></h2>
+        </div>
+        <div class="dest-grid">
+          <% nearby.forEach(item => { %>
+            <a class="dest-card" href="<%= item.detailUrl %>">
+              <img src="<%= item.image_url %>" alt="<%= item.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+              <div class="dest-card-info">
+                <h4><%= item.name %></h4>
+                <div class="category-tag"><%= item.category %></div>
+                <div class="dest-meta">
+                  <span>Best: <%= item.best_time || 'Flexible' %></span>
+                  <span>Rating: <%= item.rating || 'N/A' %></span>
+                </div>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </div>
+</body>
+</html>

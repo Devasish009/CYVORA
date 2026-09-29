@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category Coverage - TravelBharat</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="admin-page">
+    <%- include('../partials/admin-nav', { active: 'categories' }) %>
+
+    <main class="admin-shell">
+      <section class="admin-header">
+        <div>
+          <span class="label">Module</span>
+          <h1>Categories</h1>
+          <p>Track how well each travel theme is represented across the site.</p>
+        </div>
+      </section>
+
+      <section class="admin-stats-grid">
+        <% categories.forEach(item => { %>
+          <article class="admin-stat-card glass">
+            <span class="label"><%= item.slug %></span>
+            <h2><%= item.total %></h2>
+            <p><%= item.intro %></p>
+            <small>Average rating: <%= item.avg_rating || 'N/A' %></small>
+          </article>
+        <% }) %>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

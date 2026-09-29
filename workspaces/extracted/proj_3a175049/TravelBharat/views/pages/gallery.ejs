@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery – TravelBharat</title>
+  <meta name="description" content="A visual journey through India's most stunning destinations.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'gallery' }) %>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image:url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80');">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label">Visual Journey</span>
+        <h1>India's <span class="colored">Gallery</span></h1>
+        <p>A stunning collection of India's most beautiful places</p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="subpage-content">
+
+      <!-- Category Filter -->
+      <div class="gallery-filter-row">
+        <a href="/gallery" class="gal-filter-btn <%= activeCategory === 'All' ? 'active' : '' %>">All</a>
+        <% categories.forEach(cat => { %>
+          <a href="/gallery?category=<%= cat %>" class="gal-filter-btn <%= activeCategory === cat ? 'active' : '' %>"><%= cat %></a>
+        <% }) %>
+      </div>
+
+      <!-- Masonry Grid -->
+      <div class="gallery-masonry" id="galleryGrid">
+        <% images.forEach((img, i) => { %>
+        <div class="gallery-item" onclick="openLightbox(<%= i %>)">
+          <img src="<%= img.image_url %>" alt="<%= img.title %>" loading="lazy">
+          <div class="gallery-item-overlay">
+            <h4><%= img.title %></h4>
+            <span>📍 <%= img.location %>, <%= img.state %></span>
+            <span class="gal-cat-tag"><%= img.category %></span>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+
+      <% if (images.length === 0) { %>
+        <div class="no-results-msg">
+          <p>No images found for this category.</p>
+          <a href="/gallery" class="btn-gold">View All</a>
+        </div>
+      <% } %>
+
+    </div><!-- /subpage-content -->
+
+    <%- include('../partials/footer') %>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <button class="lb-prev" onclick="event.stopPropagation();moveLb(-1)">‹</button>
+    <button class="lb-next" onclick="event.stopPropagation();moveLb(1)">›</button>
+    <div class="lb-content" onclick="event.stopPropagation()">
+      <img id="lbImg" src="" alt="">
+      <div class="lb-caption">
+        <h3 id="lbTitle"></h3>
+        <p id="lbLocation"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const galleryData = [
+      <% images.forEach((img, i) => { %>
+      { url: '<%= img.image_url %>', title: `<%= img.title %>`, location: '📍 <%= img.location %>, <%= img.state %>' }<%= i < images.length-1 ? ',' : '' %>
+      <% }) %>
+    ];
+    let currentLb = 0;
+    function openLightbox(i) { currentLb = i; updateLb(); document.getElementById('lightbox').classList.add('active'); document.body.style.overflow='hidden'; }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow=''; }
+    function moveLb(dir) { currentLb=(currentLb+dir+galleryData.length)%galleryData.length; updateLb(); }
+    function updateLb() {
+      const d=galleryData[currentLb];
+      document.getElementById('lbImg').src=d.url;
+      document.getElementById('lbTitle').textContent=d.title;
+      document.getElementById('lbLocation').textContent=d.location;
+    }
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key==='ArrowRight') moveLb(1);
+      if (e.key==='ArrowLeft')  moveLb(-1);
+      if (e.key==='Escape')     closeLightbox();
+    });
+  </script>
+</body>
+</html>

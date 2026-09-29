@@ -1,0 +1,1421 @@
+Compression - gzip - mostly used
+				bz2 - less used
+				xz - new generation
+ 
+  z - gzip - compression method - gz
+ 
+Tar -czf backup1.tar.gz file1 file2
+Tar -tzf backup1.ta.gz
+Compare size difference of backup.tar backup1.tar.gz
+Delete the files
+Tar -xzf backup1.tar.gz
+ 
+j - bz2 - compress method bz2
+ 
+Tar -cjf backup1.tar.bz2 file1 file2
+Tar -tjf backup1.tar.bz2
+Compare size difference of backup.tar backup1.tar.gz
+Delete the files
+Tar -xjf backup1.tar.bz2
+ 
+ 
+J - xz - cmpress method - xz
+ 
+Tar -cJf backup1.tar.xz file1 file2
+Tar -tJf backup1.ta.xz
+Compare size difference of backup.tar backup1.tar.gz
+Delete the files
+Tar -xJf backup1.tar.xz
+ 
+Gzip is little bit lagging in fastness when compared with xz
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+dnf install tuned
+  Tuned --version
+  Dnf list tuned
+  Systemctl is-active tuned
+  Systemctl is-enabled tuned
+  Systemctl enable --now tuned
+ 
+ 
+Location of tuned profiles - /usr/lib/tuned
+Tuned-adm active
+Tuned-adm profile_info <profilename>
+Tuned-adm list
+Tuned-adm profile <profilename>
+Tuned-adm recommend
+Tuned-adm off
+ 
+Dnf remove tuned
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+selinux--1)enforcing--security
+         2)permissive--monitoring
+security is enabled to stop some unauthorized access
+server--unauthorized access-monitor
+setenforce--enforcing/permissive to take effect after reboot
+permanent/persistent after reboot also -->configuration file
+user--browser--website--server
+developers--server--website files--modify
+administrator--server--website files--ip address
+
+2 ways to manage disks
+*msdos-loder-bios--4partitions-1tb
+gpt-new bios-uefi -boot--128 partitions-1zb
+
+**lsblk
+parted /dev/xvdb print
+parted /dev/xvdb mklabel msdos
+parted /dev/xvdb print
+parted /dev/xvdb
+mkpart
+primary
+xfs
+2048s
+1000MB
+quit
+udevadm settle
+lsblk
+
+
+**lsblk
+parted /dev/xvdb print
+parted /dev/xvdb mklabel gpt
+parted /dev/xvdb print
+parted /dev/xvdb
+mkpart
+name
+xfs
+2048s
+1000MB
+quit
+udevadm settle
+lsblk
+
+**/dev/parted /dev/xvdb
+print
+rm 1
+quit
+lsblk
+
+
+==========================================================================
+Ctrl+Shift+ (+) -- increase the font size
+Ctrl+(-) -- to decrease the font size
+~/home/nightmare
+
+To reset the password
+
+VM -->send Ctrl+Alt+del --> 2nd option --> press e -->  after last line quiet rd.break  --> ctrl+X  --> 
+
+in switch_root:/# mount -o remount,rw /sysroot/ 
+switch_root:/# chroot /sysroot
+sh-5.1# passwd root
+Changing passwdrd for user root
+New password:
+Bad password :
+retype new password :
+passwd:all authentication tokens updated successfully
+
+sh-5.1# touch /.autorelabel
+sh-5.1# exit 
+exit
+switch_root:/# exit
+logout
+
+next after loading click on "not listed"
+enter root
+enter the new password
+
+
+
+
+
+
+
+pwd(present working directory)--displays the user directory  
+
+There are two kinds of users in the linux
+ 
+user -- $
+root -- #
+
+ls -- displays the all directories and files in the particular location
+
+clear -- the command to clear the screen (shortcut key (ctrl+L))
+
+alias c=clear (for setting the temporary shortcut )
+
+Task: to find the permenant change the shortcut using alias
+
+
+whoami -- displays the user
+
+ls -l ---display list of all files and directories in detail (  )  Or ll -- long list (same operation performed)
+
+[drwxr-xr-x. 2 nightmare nightmare 6 Aug 30 15:11 file or directory name]
+
+d -- directory
+(-) -- filw
+permissions
+rwx for user         first rwr=owner permission
+r-x for groups	      secound rwr=group permission
+r-x for others		third rwr=others permission
+ 
+2 -- idome number
+
+nightmare -- user(for the first)
+nightmare -- group(for the second)
+
+6- bits (size of the directory)
+
+Aug 30 15:11 --- the details of the date and time when created 
+
+ROOT commands
+ll-lm,ll-ls
+
+touch filename.txt --- to create the new empty file
+cat > filename -- to create a file which we can pass the content to it
+cat filename -- to view the content in the file
+cd /root -- to change the directory to the root (only apppicable for the root user)
+ls -R/ --- to view the all directories 
+rm directoryname
+rm -f directory name
+s
+
+
+To switch to root -- su root
+To exit from root -- exit
+
+to create n number of files (n is the file number ) -- touch filename{1..n}   
+to remove n number of files (n is the file number ) -- rm filename{1..n}
+to remove n number of files (n is the file number ) -- rm filename*
+to remove n number of files (n is the file number ) -- rm -rf filename*     
+
+
+to create n number of folder --> mkdir foldername{1..n}
+to create n number of folder --> rmdir foldername{1..n}
+to remove n number of files  --> rm -rf foldername*
+
+
+to change the old file name to new file name(or to move the content to newfile) --> mv oldfilename newfilename
+to copy the content of the old file to newfile(by creating it) --> cp oldfilename newfilename 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+to know the date -->date
+presents calendar --> cal date month year
+basic calulator --> bc 
+operations 
+
+^Z
+
+head -n 5 filename// show the number of file to see in the directory from the top
+tail -n 5 filename // show the number of file to see in the directory from the bottom
+more filename // to show the all files
+less filename // end of the file
+
+man ls
+man mkdir
+
+
+to count in file --> wc filename
+
+Output:lines words characters filename
+
+line --> wc -l filename 
+charatcer --> wc -c filename 
+words -->wc -w filename
+
+to append content to the file --> cat>>filename
+to print --> echo "content"  
+to add the details of the calender content to the file --> cal date month year  >> calender
+to replace the details of the calender content to the file with the present content --> cal date month year  > calender
+
+vi filename //editor
+
+there ar three modes:
+ 		-command
+		-insert
+		-exit
+commands:-
+
+i-insert mode
+esc(to come back from insert mode to command mode)
+
+yy-copies the line
+
+3yy-copies lines from the cursor
+
+p-paste
+
+dd-deletes the line
+
+
+
+
+
+chmod # to change the file permissions 
+
+ls -l file name 
+out :-rw-r--r-- 
+
+ls -ld directory name
+
+out: drwxr-xr-x
+(dr-directory ,x - execute)
+
+Octal mode 
+user-u
+group-g
+other-o
+
+chmod o-r filename
+
+chmod o+r filename
+
+chmod u-w filename
+
+chmod u+w filename
+
+
+chmod u=rwx,g=rw,o=r filename
+
+
+
+numerical mode 
+r=4
+w=2
+x=1
+
+example : chmod 547 filename
+Out :r-xr-rwx
+
+
+man ls, man chmod --> used to show the description of the command (man command name)
+
+touch filename --> used to create a new file 
+
+. filename --> to hide the file
+
+ls -a --> to show the hidden files
+
+mv filename .filename --> to convert the normal file to hidden file
+
+mv .filename filename --> to convert the hidden file to the normal file
+
+
+/etc/passwd --> user information
+
+/etc/group  --> group inform
+
+/etc/shadow --> accessed by root only
+
+/etc/gshadow --> accessed by root only
+
+
+head /etc/passwd --> to see the first lines of the file
+
+tail /etc/passwd
+
+more /etc/passwd
+
+head -n1/etc/passwd --> to view the path of the bin
+
+
+shell is used to execute the command 
+
+
+root        :x               :0      :0        :root            :/root              :/bin/bash
+
+user name:  masked passwd : uid : group id : canonical name : user home directory : shell
+
+history >> filename --> to append the history of the commands till used to the file 
+cat filename --> to view the content of the history which is append to the file 
+
+
+tail -n1 /etc/passwd --> to see the 
+
+tail -n1 /etc/shadow --> to see the encripted password
+
+
+useradd -u number filename --> to create a user
+
+tail -n1 /etc/passwd --> to see the id
+
+
+useradd -c new canonical name filename --> 
+
+
+usermod -s /bin/bash filename -->to give ac
+
+usermod -s /bin/bash nologin -->to give nologin
+
+userdel -p filename
+
+lsblk --> to check the virtual hard disk details
+
+mkfs -t ext
+
+blkid
+
+lsblk
+
+
+
+
+PARTITIONS
+
+IDE SATA SCSI
+
+
+
+ide--hda,hdb,hdc
+sata,scsi-- sda,sdb,sdc,sde
+ssd-- nvme0n1
+
+
+
+two types
+1. Primary(P)  ---  drive writes are include
+2. extendend (E)  ---- is a block we can create logical partitions(no drive writers)
+
+
+4 primary partitions, 3P + 1E,2P+1E,1P+1E
+
+
+
+convertion of user to root --sudo root
+
+mkfs -t
+
+blkid
+
+mount 
+
+
+
+procedure for creating a partion
+
+lsblk
+
+fdisk /dev/sdb
+
+n
+
+
+p or e
+
+if  p
+
+
+enter
+
+
+enter while asking the first sector
+
+for size to be asssinged +nG --> n indicates the size 
+
+w
+
+partprobe --> for updatings the partiton
+
+blkid --> To check if it is formated or not
+
+mkfs.ext4 /dev/sdb 
+
+
+mkdir /mnt/folder name 
+
+mount mkdir /dev/sda2/ mnt/folder name
+
+umount /dev/sda2
+
+vim /etc/fstab --> editing the file fstab in the etc
+
+mount -a
+
+lsblk
+
+
+
+1 to 4 is allocated for primary and extented in case of "Logical partitions"
+
+we should allocate it from 5 for the partitions
+
+
+
+
+for deleting the partitions 
+
+
+fdisk /dev/sda
+
+d
+
+Swapping in Memory Managemnet 
+
+P1->1GB
+P2->2GB
+P3->1GB
+P4->1GB
+P5->2.5GB
+P6->1GB availability ->0.5
+
+
+df -hT--> shows the file systems
+free -h or free -m --> shows the RAM size.(if we increase the RAM size we should increase the memory size)
+swapon --> shows the availablity of the swap partitions
+fdisk /dev/sda
+n--> new partition
+p-->primary extention
+enter 
+enter 
++nG(assign number value of n)
+t--> to change the type
+L
+enter the id of the windows show in the windows location in the above L command
+partprobe
+blkid
+mkswap /dev/sda1
+lsblk
+swapon
+swapon /dev/sda1
+swapon
+free -h
+vim /etc/fstab
+   click i
+/dev/sbd1	swap	swap	defaults	0 0
+
+click ESC
+shift+:wq!
+
+to delete the swap partition
+vim /etc/fstab
+	delete or comment the (or delete it ESC , dd at the line)
+:wq!
+swapoff /dev/sda1
+swapon
+
+
+fdisk /dev/sda
+d
+w
+enter
+partprobe
+lsblk
+
+
+
+
+How to create a user with name 
+set password for user as admin
+
+
+
+hostnamectl set-hostname roll no  --> to change the host 
+ 
+ 
+
+******ssh root@servera -->> for redhat lab environment******** 
+fdisk/dev/vdb--> for virtual disk creation
+
+
+
+
+
+
+
+
+vi filename
+ex:- vi/root/file1.txt
+:wq!--> write and quit
+:q!-->quit
+
+
+
+
+LVM
+physical partions into physical volumes
+
+
+from volume group create logical volume
+
+partiton from one disk
+
+volume from any number of disk
+
+example :
+
+PV1 = 5G
+PV2 = 10G
+PV3 = 4G 
+PV4 = 8GB
+Pv5 = 20GB
+VG -- 27GB + 20GB
+LV -- 17GB + 10GB + 20GB
+
+
+
+Physical volume 
+ex: vg name class
+
+lv redhat
+
+cap : 500MB
+
+
+lsblk
+fdisk /dev/sda
+n
+p
+enter
+enter 
++xG -->
+t
+use this command line if you want to do it for second time (2)
+8e --> hexacode
+w
+pvcreate /dev/sda1  /dev/sdb1  /dev/sdc1  /dev/sdd1 //to create the physical volumes
+
+pvdisplay
+
+vgcreate transport /dev/sda1   /dev/sdc1  /dev/sdd1 -->> to create a volume group as transport with participating pv names
+
+vgdisplay
+
+lvcreate -L 17G -n car transport (incase of extents L,incse of size l)       lvcreate -l 512 -n trainer thub 
+
+lvdisplay
+
+lsblk  --> to check if the /transport/car is all the partitions
+
+mkfs -t ext4 /dev/transport/car  -->  to use the group into partition      (FORMAT)   mkfs -t xfs /dev/transport/car
+
+blkid --> block id
+
+mkdir guestvehicle
+
+mount /dev/transpot/car /root/guestvehicle
+
+vim /etc/fstab
+
+/dev/tranport/car		/root/guestvehicle		ext4  	defaults     0  0
+
+mount -a
+
+lvextend -L +3G /dev/tranport/car   -->extend the space
+
+df -hT
+
+resize2fs /dev/transport/car  (to resizing online for ext4)
+
+xfs_groefs /dev/thub/trainer  (to resizing online for xfs)
+
+lsblk
+
+first remove  logical group
+lvremove /dev/thub/trainer (before removing you should unmount the lv   (umount /dev/thub/trainer)  )
+
+next  remove  volume  group
+vgremove vgname   (vgname --> transport)
+
+next remove  logical group
+pvremove  pvname   (/dev/sda1)
+
+default value for 1 extent is 4MB(to change the defaults value size)
+vgcreate -s 8M vg0 
+
+
+fdisk /dev/sdb
+
+********************************************************
+2. Create a collaborative directory /common/admin with the following characterstics:
+a) Group ownership of /common/admin is admin.
+b) The directory should be readable,writable and accessible to members of admin, but not to any
+other user.
+(It is understood that root has access to all files and directories on the system.)
+c) Files created in /common/admin automatically have group ownership set to the admin group.
+
+
+mkdir -p /common/admin   (p indicates for pairing withanother group)
+
+ls -ld /common/admin/
+
+chgrp admin /common/admin/
+
+ls -ld /common/admin/
+
+chmod 770 /common/admin/   -->requirement 
+
+ls -ld  /common/admin/
+
+chmod g+s /common/admin/ ---> special userpermission(persmission inheritenve)
+
+ls -ld  /common/admin/
+
+cd  /common/admin/
+
+touch 1.txt
+
+mkdir tsy
+
+ls -l
+
+syntax for changing password --> passwd --stdin username
+
+
+
+
+
+
+
+
+
+
+jobs
+
+gnome disks &  --> here 
+
+to kill the process --> kill PID  (Process ID)
+
+gnome-characters
+
+gnome-calculator
+
+ps --> to see the present working process
+
+ps -a --> u can use to see the present working process from another terminal
+
+jobs --> shows the commands that are running in the background 
+
+ps -au -->
+
+ps -aux --> tho see the all executed process
+
+gnome-system-monitor
+
+Usage:
+
+
+fg %1 --> to change the backend process to frontend process
+
+
+
+	NETWORK MANAGEMENT 
+1. Broadcasting
+2. Multicasting
+3. Unicastinh
+
+
+Logical topologies
+Workshop
+
+getmac --> too know the mac address
+
+
+
+Octate
+
+00000000.
+
+In Ip address MIn value is 0  and Max value is 255
+
+
+
+A 00000000 = 0(LSB)
+
+A 01111111 = 255-128 =127(MSB)
+
+B 10 000000 = 128(LSB)
+
+B 10 111111 = 255-64=191(MSB)
+
+C 110 00000 = 128 + 64 = 192 (LSB)
+
+C 110 11111 = 255 - 32 = 223 (MSB)
+
+D 1110 0000 = 128+64+32 = 224 (LSB)
+
+D 1110 1111 = 255 - 16 = 239 (MSB)
+
+E 1111 0000 = 128+64+32+16 =240(LSB)
+
+E 1111 1111 = 255 (MSB)
+
+A 0 - 127 (1-126)  --> If IP address start with "0" its an invalid
+
+127 is a loop back address
+
+
+
+
+0.0.0.1  --> invalid
+
+0.0.0.0  --> unicast address
+
+255.255.255.255 --> broadcast address
+
+1.128.192.224.240 --> A class 
+
+17.12.256.1 --> Invalid  --> beacuse if any octante exceeds 255 
+
+128.0.0.0 --> network address --> If any address ends with zero
+
+127.225.225.254 --> loop back address -> If any octante is 127 then itsis called loop back address
+
+169.254.0.1  --> APIPA (AUTOMATIC PRIVATE IP ADDRESSING) --> Randomly assign the IP address  AUTOMATICALLYthe system assign the address to it 
+
+DHCP (DYNAMIC HOST CONFIGURATION PROTOCOL) --> 
+
+
+
+N:H:H:H
+1.0.0.0 (network address)
+
+1.0.0.1 valid
+
+till
+
+1.0.0.255 
+
+after 255
+
+
+1.0.1.1 to 1.0.1.255   , 1.0.2.1 to 1.0.2.255   ,......... 1.0.255.1 to 1.0.255.255 
+
+1.1.0.1 to 1.255.255.255   ,
+
+
+
+to view the ip address of all devices --> ip a
+
+to check the connectivity --> ping ipaddress (If timerequest is sent then the workstation and server are connect)
+
+to check the number of the responces --> ping -c4 ipaddress (continues pinging)
+
+to view the specific ip address --> ip a show eth0
+
+statics of the particular interface --> ip -s link show eth0
+
+to change the server or to connect to the workstation --> ssh root@serverb(or ipaddress)
+
+to check the number of routers connected to the machine -->ip route
+
+to show the network connection -->nmcli con show  (or) nmcli connection
+
+nmcli connection add con-name "name " ifname eth0 type ethernet
+ 
+systemctl shh status d --> to view the status of the ssh
+
+ssh-keygen --> generates the key to connect to the my machine (if public key(can be share to other ) and private key (with in the system) is )
+
+exit ---> to exit the server
+
+nmcli --> network management command line interface 
+nmcli connection show -> it will list all the connections
+nmcli connection modify "connection name" ipv4.address 192.168.10.12/24 ipv4.gateway 192.168.10.254 ipv4.dns 192.168.10.254 ipv4.method manual  (In this command the followed part in ipv4.address 192.168.10.12/24 the /24 indicates the host address in the 4octate ipv4 00000000.00000000.00000000.00000000   , the maximum address is 255.255.255.255 in the example the last octant belongs to the host address NNNH)
+nmcli connection up "connection name"
+
+
+
+shortcut
+
+ctrl + alt +f1/f2 --> gui
+f3 to f6 --> command
+
+
+to give the adminstator permission to the particular users
+
+
+su - root --> login to the root account 
+
+cd /etc/sudoers.g/
+whoami
+cat>username
+Enter-->username	  ALL=(ALL)		ALL
+^Z
+now the sudo permission for the particular user is completed
+sudo useradd anotherusername
+
+
+sudo permissions for to the group 
+cd /etc/sudoers.d/
+cat>SKillUP
+%SkillUp	ALL=(ALL)	ALL
+Enter --> ^Z
+
+group management 
+
+TO delete the user directory --> rm -rf username or userdel -r username
+
+to view the ID details of the user  --> id username
+to add a group --> groupadd groupname 
+to change the primary group --> usermod -g groupname username 
+to append the user to the group --> usermod -aG groupname username
+to check the existence of the group--> getent group groupname
+
+
+timedatectl
+to know the timezones available --> timedatectl list-timezones 
+timedatectl list-timezones | more grep timezone_name/city
+timedatectl set-timezone timezone_name_area/city
+timedatectl set-time HH:MM:SS (when NTP is available this command will shows the error ,so in order toe permit it we should stop the previous services)
+
+	
+shadows
+cat /etc/shadow --> it stores user information like password and acccount information
+4
+
+username:encrypted_password:
+
+if you want to change the password to the particular 
+
+encrypted password
+$Hashing algorithm$salt$
+hashing algorthims :- SHA(secure hashing algorthim),SHA512,SHA256
+salt:-extra bits to make it more secure
+
+
+
+
+file format ---1. exe and 2. msi
+to install a package we need RPM
+
+
+
+dnf info httpd 
+systemctl status httpd
+dnf list httpd
+dnf install  httpd
+systemctl enable httpd
+cd /var/www/html
+ls
+cat>index.html
+
+sudo --> super user do 
+
+to add the user to sudoers so that it can perform sudoers operations
+(in root)
+vim /etc/sudoers
+
+       username ALL=(ALL)		ALL                (this can given the user as all the root as permissions)
+
+which useradd
+
+
+
+
+#acl --> access control list 
+we should do it in "mnt" 
+vim filename  
+
+getfacl filename --> to get the file permissions
+
+setfacl -m u:username:rw file/directory  (m is modefied ,in place of rw we can give any r w x permissions,for nill permissions you can give --)
+
+
+
+
+first create a file vim filename 
+
+ls -l filename
+
+facl formate         getfacl filename
+
+setfacl -m u:username:file_permission file/directory
+
+switch to user created
+
+cat file
+
+vim file
+serna
+we should do it in "mnt" 
+
+switch to root
+
+to know more about acl   ---> man #acl
+
+man setfacl
+
+setfacl -m mask:r username    (If we use the mask for the file then it )
+
+
+which hello ===> for the execution loaction
+
+echo ==> to print 
+
+var=$(hostname -s); echo $var  --> bash script to print the hostname
+
+vim firstscript.sh  
+
+#!/user/bin/bash
+
+echo " this is my first bash script" > /root/ output.txt
+
+echo " " >>/root/output.txt
+
+sh firstscript.sh
+
+ 
+#!/usr/bin/bash
+echo "This is my Partittio Info" >> /root/lsbk.txt
+echo "%%%%%%%%%%%%" >> /root/lsbk.txt
+lsbk >> /root/lsbk.txt
+echo " ">>/root/lsbk.txt
+echo "" >>/root/lsbk.txt
+echo " This is the end of my report " >> /root/lsbk.txt
+
+blkid --> block device information
+
+
+
+#!/usr/bin/bash
+mkdir -p /root/user/1/2/3/4/5/6/7
+hostnamectl > /root/host.txt
+cp /root/host.txt /mnt/host2.txt
+rm -rf first.sh
+
+
+
+chmod a+x 5.sh
+
+
+grep '^$omputer' /user/share/dict/words
+
+
+grep -i "^name"  1.txt ---> it ignores the case sensitive
+
+grep -v "^name"  1.txt --> v is without match
+
+grep -A1 "name"  1.txt --> after match
+
+grep -B1 "name"  1.txt
+
+
+nodes(vertices)
+process node : represents processes or threads in the system
+resource node : allocates the memory of the process
+
+
+edge : the edges are the connections between the nodes
+
+
+
+conditios for the resourse deadlock
+
+1> mutual exclusion : At least one resource must be non -shareable , meaning only one process can use it at a time.
+
+2> Hold and wait : Processes must hold at least one 
+
+3> No Preemption : Self decisiom is not possible: they can only br released voluntarily
+
+4> Circular Wait : Circular dependies must exist , where each process is waiting  for a resource held by the next process in a chain
+
+
+
+DEADLOCK TERMINATION
+
+--process termination
+
+--resource Preemption
+
+DEADLOCK AVOIDANCE
+
+--safety Algorithm
+
+--REsource Allocation Stratergies
+
+DEADLOACK PREVENTION:
+
+-mutual exclusion
+
+-hold and wait
+
+-no Preemption
+
+-Circular Wait
+
+
+
+
+working process of demand paging
+
+1> program execution
+
+2> 
+
+3> Page Fault Handling
+
+4> Page Fetch
+
+5> REsuming the program
+
+6> Page Replacement 
+
+7> Page Cleanup
+
+
+
+***************************************************************************
+
+
+
+
+
+
+
+lsblk
+
+
+process same ................
+
+
+pvcreate /dev/sda1
+
+to create a vg of size 8 MB
+
+vgcreate vgname -S 8 datastore /dev/sda1
+
+vgdisplay
+
+lvcreate -l 50 -n database datastore 
+
+lsblk
+
+
+
+ii) 
+
+
+
+
+
+*****************************************************
+
+
+atq --> shows the pending scheduled jobs
+
+echo "date >> /home/student/myjob.txt" | at now +2min  --> add a job 
+
+
+
+
+
+crontab -e --> open the crontab file 
+
+min hours date month NumberOfdayOfTheWeek  command >> directory/filename.txt
+59 23 14 aug * echo "Happy Independence day" >> /root/job.txt
+
+ 
+
+crontab -l
+
+cat filename
+
+date -s "YYYY-MM-DD HH:MM:SS" --> to change the date of the linux system
+
+Ex: date -s "2023-08-14 23:58:50"
+
+-------------------------------------------------------
+vim addusers.sh
+      #!/bin/bash
+      for i in {1..10}; do
+      	  useradd saladi$i
+       	  echo "user$i created"
+      done
+
+sh addusers.sh
+
+O/p : 
+user1 created
+user2 created
+user3 created
+user4 created
+user5 created
+user6 created
+user7 created
+user8 created
+user9 created
+user10 created
+
+vim userdelete.sh
+	#!/bin/bash
+	for i in {1..10};do
+        	userdel -r saladi$i
+        	echo "Deleted"
+	done
+sh userdelete.sh
+
+o/p: 
+Deleted
+Deleted
+Deleted
+Deleted
+Deleted
+Deleted
+Deleted
+Deleted
+Deleted
+Deleted
+
+
+
+systemctl start tuned.service --> to start the tuned service
+
+systemctl status tuned  --> to check the tuned is actice 
+
+dnf install tuned or m install tuned --> to  install the tuned services
+
+tuned-adm list --> to see the list of available profiles
+
+tuned-adm active --> to see the active profile
+
+tuned-adm profile profileName(anyprofile) --> to set the active profilename 
+
+tuned-adm recommend --> to see or check the recommended profile
+(In exam we should first see the recommended profile and then set the recommed profile as an active profile using the active )
+
+
+Archiving files are used for backup
+
+tools used for the achive is "tar"
+
+
+tar -cvf <archiveFile.tar> (path of the directories)
+
+c --> create
+v --> verbose(we can see the process of the deleting the file(example))
+f --> file
+
+
+ls -lh --> to view the size of the file(in human readable language)
+
+tar -xvf <archiveFile.tar>  --> to extract the file 
+
+tar -tvf <archiveFile.tar>  --> to 
+
+
+
+--------------------------------------------------------------
+
+ls -lh
+
+tar -czvf directory/2.gz filename
+
+tar -cjvf directory/3.bz filename
+
+
+
+----------------------------------------------------------------------------
+
+
+cd /var/log  --> to change the path to log
+ls --> to show the log files
+
+log is the evedence (it collects the data)
+
+systemctl restart sshd 
+
+
+tail messages
+
+su - vishu
+
+cat /etc/shadow
+
+exit 
+
+tail messages
+
+tail secure
+
+-----------------------------------------------------------
+
+timedatectl
+
+timedatectl list-timezones
+
+timedatectl set-timezone Indian/Antananarivo
+
+timedatectl set-ntp false
+
+timedatectl set-time 9:20:31
+
+timedatectl set-ntp true
+
+systemctl restart chronyd
+
+
+
+cd
+
+getenforce
+O/p : Enforcing 
+setenforce permissive
+
+getenforce
+O/p : Permissive
+
+setenforce enforcing
+
+tail /etc/selinux/config
+
+cat /etc/selinux/config --. to view the SELinux permissions
+
+vim /etc/selinux/config ---> can change the SElinux mode permenantly
+
+ls -lZ --> to see the SELinux context
+
+sestatus -b --> to see the particular service is on or off (b means boolean)
+
+sestatus -v --> to see the context of SElinux (v means verbosity )
+
+setenforce [ Enforcing | Permissive | 1 | 0 ]
+
+getsebool -a --> to get the status of all services
+
+getsebool -a|grep http --> to get the status of all http services
+
+semanage boolean -l| grep http --> to see the description of the http services(APACHE)
+
+setsebool [options][boolean = <on(1) | (0)>]  --> to enable or diable the services
+ -P --> make the changes persistent(if U dont provide "-p" in the command then the system requirement will never change , it will be the same )
+
+setsebool -p httpd [service name ] on --> to on the services
+
+setsebool -p httpd [service name ] off --> to off the services
+
+
+yum install -y policycoreutils-python policycoreutils selinux-policy settroubleshoot-server         --> to install the packages that should be installed for the SE linux troubleshooting issues
+
+
+
+firewall are of two softwarefirewall(in bulit system software) and hardwarefirewall(data is transmitted within the packets)
+
+to install any pacakage -- minstall
+
+sudo - super user do 
+to see wheather the firewall is active ----> systemctl status firewalld.service
+
+
+TCP -transmission control protocol  --> In this transmission the information is send in the packets where the security is included but the transittion is slow
+
+
+UDP - user datagram protocol --> 
+
+
+firewall-cmd  --permanent --add-port=80/tcp(or udp)  --> 
+
+
+
+
+
+
+
+containers 
+
+
+Benefits of containers:
+
+1.Flexibility  -- redeveloping of applications across various environments
+2.Consistency -- development ,testing ,production
+3.Resource Utilization
+4.Isolation
+
+
+Containerization in redhat
+
+
+1.Podman  -- a tool to start,stop and restart to manage running containers
+
+2.Buildah
+
+3.Skopeo
+
+
+Rootful and Rootless containers
+
+
+rootful -- have the superuser previelages
+
+rootless -- doesn't have the superuser previelages
+
+
+
+Container images and regestries 
+
+
+
+Podman commands
+
+1.podman run -- run a command in a new container 
+
+2.podman ps -- list containers currently running
+
+3.podman build -- build an image using Buildah
+
+4.podman ps -a -- tooo view the inactive containner 
+
+
+
+
+
+Lab 
+
+lab start containers-deploy
+
+ssh student@servera
+
+sudo dnf install container-tools
+
+mkdir -p /home/student/.config/containers
+
+vim /home/student/.config/containers/registries.conf
+
+podman info
+
+podman login registry.lab.example.com
+
+podman search registry.lab.example.com/
+
+skopeo inspect \
+docker://registry.lab.example.com/ubi8/python-38
+
+podman pull registry.lab.example.com/ubi8/python-38
+
+podman images
+
+podman run -d --name python38 \
+registry.lab.example.com/ubi8/python-38 sleep infinity
+
+podman ps
+
+
+
+Vm -1 -servera
+
+
+set the hostname ---> hostnamectl
+set the ip address --> 
+
+
+create a repository
+
+troubleshooting SELINUX issue
+
+User and group creation.adding group members and setting password
+
+creating a collaborative director

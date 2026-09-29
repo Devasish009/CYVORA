@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage States - TravelBharat</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="admin-page">
+    <%- include('../partials/admin-nav', { active: 'states' }) %>
+
+    <main class="admin-shell">
+      <section class="admin-header">
+        <div>
+          <span class="label">Module</span>
+          <h1>States & Union Territories</h1>
+          <p>Add or refine the content that powers state pages and state cards.</p>
+        </div>
+      </section>
+
+      <% if (success) { %><div class="auth-alert success"><%= success %></div><% } %>
+      <% if (error) { %><div class="auth-alert error"><%= error %></div><% } %>
+
+      <section class="admin-panel glass">
+        <div class="admin-panel-head">
+          <h2>Add State or UT</h2>
+        </div>
+        <form class="admin-form-grid" action="/admin/states" method="POST">
+          <input name="name" placeholder="Name" required>
+          <select name="type">
+            <option value="state">State</option>
+            <option value="union_territory">Union Territory</option>
+          </select>
+          <input name="capital" placeholder="Capital" required>
+          <input name="region" placeholder="Region" required>
+          <input name="language" placeholder="Primary language">
+          <input name="best_time" placeholder="Best time">
+          <input name="image_url" placeholder="Image URL">
+          <input name="destinations_count" placeholder="Destination count" type="number" min="0">
+          <input name="famous_for" placeholder="Highlights / famous for">
+          <textarea name="description" placeholder="Description"></textarea>
+          <button class="btn-gold admin-submit" type="submit">Add State</button>
+        </form>
+      </section>
+
+      <section class="admin-panel glass">
+        <div class="admin-panel-head">
+          <h2>Existing Entries</h2>
+        </div>
+        <div class="admin-card-list">
+          <% states.forEach(item => { %>
+            <form class="admin-item-card" action="/admin/states/<%= item.id %>/update" method="POST">
+              <div class="admin-item-head">
+                <h3><%= item.name %></h3>
+                <div class="admin-inline-actions">
+                  <button type="submit" class="btn-outline admin-small-btn">Save</button>
+                </div>
+              </div>
+              <div class="admin-form-grid compact">
+                <input name="name" value="<%= item.name %>" required>
+                <select name="type">
+                  <option value="state" <%= item.type === 'state' ? 'selected' : '' %>>State</option>
+                  <option value="union_territory" <%= item.type === 'union_territory' ? 'selected' : '' %>>Union Territory</option>
+                </select>
+                <input name="capital" value="<%= item.capital || '' %>">
+                <input name="region" value="<%= item.region || '' %>">
+                <input name="language" value="<%= item.language || '' %>">
+                <input name="best_time" value="<%= item.best_time || '' %>">
+                <input name="image_url" value="<%= item.image_url || '' %>">
+                <input name="destinations_count" type="number" min="0" value="<%= item.destinations_count || 0 %>">
+                <input name="famous_for" value="<%= item.famous_for || '' %>">
+                <textarea name="description"><%= item.description || '' %></textarea>
+              </div>
+            </form>
+            <form action="/admin/states/<%= item.id %>/delete" method="POST" class="admin-delete-form">
+              <button type="submit" class="admin-delete-btn">Delete <%= item.name %></button>
+            </form>
+          <% }) %>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

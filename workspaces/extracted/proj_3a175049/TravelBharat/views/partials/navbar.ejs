@@ -1,0 +1,57 @@
+<nav class="navbar" id="navbar">
+  <a href="/home" class="nav-logo">
+    <span class="icon">🇮🇳</span>
+    <span class="travel">Travel</span><span class="bharat">Bharat</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="/home"       class="<%= typeof active !== 'undefined' && active==='home'       ? 'active' : '' %>">Home</a>
+    <a href="/states"     class="<%= typeof active !== 'undefined' && active==='states'     ? 'active' : '' %>">States</a>
+    <a href="/explore"    class="<%= typeof active !== 'undefined' && active==='explore'    ? 'active' : '' %>">Explore</a>
+    <a href="/categories" class="<%= typeof active !== 'undefined' && active==='categories' ? 'active' : '' %>">Categories</a>
+    <a href="/gallery"    class="<%= typeof active !== 'undefined' && active==='gallery'    ? 'active' : '' %>">Gallery</a>
+    <a href="/about"      class="<%= typeof active !== 'undefined' && active==='about'      ? 'active' : '' %>">About</a>
+    <% if (user) { %>
+      <% if (user.role === 'admin') { %>
+        <a href="/admin/dashboard">Admin</a>
+      <% } %>
+      <span class="nav-user">👤 <%= user.full_name.split(' ')[0] %></span>
+      <a href="/auth/logout" class="nav-cta">Logout</a>
+    <% } else { %>
+      <a href="/login" class="nav-cta">Login</a>
+    <% } %>
+  </div>
+  <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  function toggleNav() {
+    const nl = document.getElementById('navLinks');
+    const isOpen = nl.classList.toggle('nav-open');
+    document.getElementById('navToggle').setAttribute('aria-expanded', isOpen);
+  }
+
+  // Close mobile menu when a nav link is clicked
+  document.querySelectorAll('#navLinks a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('nav-open');
+      document.getElementById('navToggle').setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    const nl = document.getElementById('navLinks');
+    const toggle = document.getElementById('navToggle');
+    if (nl.classList.contains('nav-open') && !nl.contains(e.target) && !toggle.contains(e.target)) {
+      nl.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>

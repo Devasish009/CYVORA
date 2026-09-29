@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= category %> Destinations - TravelBharat</title>
+  <meta name="description" content="Discover India's best <%= category.toLowerCase() %> destinations with TravelBharat.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'categories' }) %>
+
+    <section class="page-hero" style="background-image:url('<%= destinations[0]?.image_url || "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=1920&q=80" %>');">
+      <img src="<%= destinations[0]?.image_url || '' %>" alt="" style="display:none;" data-hero-target=".page-hero" data-fallback="/img/dest-placeholder.svg">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label">Category Spotlight</span>
+        <h1><%= category %> <span class="colored">Escapes</span></h1>
+        <p><%= categoryMeta?.intro || 'Discover curated destinations across India.' %></p>
+      </div>
+    </section>
+
+    <div class="subpage-content">
+      <% if (topStates.length) { %>
+        <div class="subpage-section-header">
+          <span class="label">Best Regions</span>
+          <h2>Where <span class="colored"><%= category %></span> Shines</h2>
+        </div>
+        <div class="about-tags" style="margin-bottom: 40px;">
+          <% topStates.forEach(state => { %>
+            <a href="<%= state.url %>" class="about-tag"><%= state.name %> (<%= state.total %>)</a>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <div class="explore-results-count">
+        <strong><%= destinations.length %></strong> destination<%= destinations.length !== 1 ? 's' : '' %> in <%= category %>
+      </div>
+
+      <div class="dest-grid explore-dest-grid">
+        <% destinations.forEach(destination => { %>
+          <a class="dest-card" href="<%= destination.detailUrl %>">
+            <img src="<%= destination.image_url %>" alt="<%= destination.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+            <div class="dest-card-info">
+              <h4><%= destination.name %></h4>
+              <span class="state-badge"><%= destination.state_name %></span>
+              <div class="category-tag"><%= category %></div>
+              <p class="dest-desc"><%= destination.description ? destination.description.substring(0, 110) + '...' : '' %></p>
+              <div class="dest-meta">
+                <span>Best: <%= destination.best_time || 'Flexible' %></span>
+                <span>Rating: <%= destination.rating || 'N/A' %></span>
+              </div>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </div>
+</body>
+</html>

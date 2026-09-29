@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= state.name %> - TravelBharat</title>
+  <meta name="description" content="Explore top destinations, travel highlights, and gallery moments from <%= state.name %>.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'states' }) %>
+
+    <section class="page-hero" style="background-image:url('<%= state.image_url %>');">
+      <img src="<%= state.image_url %>" alt="" style="display:none;" data-hero-target=".page-hero" data-fallback="/img/state-placeholder.svg">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label"><%= state.type === 'union_territory' ? 'Union Territory' : 'State' %></span>
+        <h1><%= state.name %></h1>
+        <p><%= state.description %></p>
+      </div>
+    </section>
+
+    <div class="subpage-content">
+      <div class="about-mission-grid">
+        <div class="about-text-col">
+          <span class="label">Quick Snapshot</span>
+          <h2>Why Visit <span class="colored"><%= state.name %></span></h2>
+          <p><%= state.description %></p>
+          <div class="about-tags">
+            <span class="about-tag">Capital: <%= state.capital || 'N/A' %></span>
+            <span class="about-tag">Region: <%= state.region || 'N/A' %></span>
+            <span class="about-tag">Language: <%= state.language || 'N/A' %></span>
+            <span class="about-tag">Best Time: <%= state.best_time || 'Year-round' %></span>
+            <span class="about-tag">Famous for: <%= state.famous_for || 'Local highlights' %></span>
+            <span class="about-tag"><%= state.destinations_count || destinations.length %>+ Destinations</span>
+          </div>
+        </div>
+        <div class="about-img-col">
+          <img src="<%= state.image_url %>" alt="<%= state.name %>" class="about-hero-img" data-fallback="/img/state-placeholder.svg">
+        </div>
+      </div>
+
+      <% if (categoryBreakdown.length) { %>
+        <div class="subpage-section-header">
+          <span class="label">Travel Mix</span>
+          <h2>Top <span class="colored">Categories</span></h2>
+        </div>
+        <div class="about-tags" style="margin-bottom: 40px;">
+          <% categoryBreakdown.forEach(item => { %>
+            <a href="/categories/<%= item.name.toLowerCase() %>" class="about-tag"><%= item.name %> (<%= item.count %>)</a>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <div class="subpage-section-header">
+        <span class="label">Must Visit</span>
+        <h2><span class="colored"><%= destinations.length %></span> Destinations</h2>
+      </div>
+      <div class="dest-grid">
+        <% destinations.forEach(destination => { %>
+          <a class="dest-card" href="<%= destination.detailUrl %>">
+            <img src="<%= destination.image_url %>" alt="<%= destination.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+            <div class="dest-card-info">
+              <h4><%= destination.name %></h4>
+              <span class="state-badge"><%= state.name %></span>
+              <div class="category-tag"><%= destination.category %></div>
+              <p class="dest-desc"><%= destination.description ? destination.description.substring(0, 110) + '...' : '' %></p>
+              <div class="dest-meta">
+                <span>Location: <%= destination.location || state.capital || state.name %></span>
+                <span>Best: <%= destination.best_time || 'Flexible' %></span>
+                <span>Rating: <%= destination.rating || 'N/A' %></span>
+              </div>
+              <% if (destination.entry_fee) { %>
+                <span class="dest-fee">Entry: <%= destination.entry_fee %></span>
+              <% } %>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+
+      <% if (regionalHighlights.length) { %>
+        <div class="subpage-section-header">
+          <span class="label">Highlights</span>
+          <h2>Featured in <span class="colored"><%= state.name %></span></h2>
+        </div>
+        <div class="dest-grid">
+          <% regionalHighlights.forEach(destination => { %>
+            <a class="dest-card" href="<%= destination.detailUrl %>">
+              <img src="<%= destination.image_url %>" alt="<%= destination.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+              <div class="dest-card-info">
+                <h4><%= destination.name %></h4>
+                <span class="state-badge"><%= destination.location || state.capital || state.name %></span>
+                <div class="category-tag"><%= destination.category %></div>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <% if (galleryImages.length) { %>
+        <div class="subpage-section-header">
+          <span class="label">Photo Diary</span>
+          <h2><span class="colored"><%= state.name %></span> Gallery</h2>
+        </div>
+        <div class="gallery-masonry">
+          <% galleryImages.forEach(image => { %>
+            <a class="gallery-item" href="/gallery?category=<%= encodeURIComponent(image.category) %>">
+              <img src="<%= image.image_url %>" alt="<%= image.title %>" loading="lazy">
+              <div class="gallery-item-overlay">
+                <h4><%= image.title %></h4>
+                <span><%= image.location %></span>
+                <span class="gal-cat-tag"><%= image.category %></span>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </div>
+</body>
+</html>

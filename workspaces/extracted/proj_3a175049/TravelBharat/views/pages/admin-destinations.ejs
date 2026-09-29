@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Destinations - TravelBharat</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="admin-page">
+    <%- include('../partials/admin-nav', { active: 'destinations' }) %>
+
+    <main class="admin-shell">
+      <section class="admin-header">
+        <div>
+          <span class="label">Module</span>
+          <h1>Destinations</h1>
+          <p>Manage the core discovery content that powers explore, state detail, and category pages.</p>
+        </div>
+      </section>
+
+      <% if (success) { %><div class="auth-alert success"><%= success %></div><% } %>
+      <% if (error) { %><div class="auth-alert error"><%= error %></div><% } %>
+
+      <section class="admin-panel glass">
+        <div class="admin-panel-head">
+          <h2>Add Destination</h2>
+        </div>
+        <form class="admin-form-grid" action="/admin/destinations" method="POST">
+          <select name="state_id" required>
+            <option value="">Select state</option>
+            <% states.forEach(state => { %>
+              <option value="<%= state.id %>"><%= state.name %></option>
+            <% }) %>
+          </select>
+          <input name="name" placeholder="Destination name" required>
+          <input name="location" placeholder="Location / city">
+          <select name="category">
+            <% categories.forEach(category => { %>
+              <option value="<%= category %>"><%= category %></option>
+            <% }) %>
+          </select>
+          <input name="rating" type="number" min="0" max="5" step="0.1" placeholder="Rating">
+          <input name="best_time" placeholder="Best time">
+          <input name="entry_fee" placeholder="Entry fee">
+          <input name="image_url" placeholder="Image URL">
+          <textarea name="description" placeholder="Description" required></textarea>
+          <button class="btn-gold admin-submit" type="submit">Add Destination</button>
+        </form>
+      </section>
+
+      <section class="admin-panel glass">
+        <div class="admin-panel-head">
+          <h2>Destination Library</h2>
+        </div>
+        <div class="admin-card-list">
+          <% destinations.forEach(item => { %>
+            <form class="admin-item-card" action="/admin/destinations/<%= item.id %>/update" method="POST">
+              <div class="admin-item-head">
+                <h3><%= item.name %></h3>
+                <div class="admin-inline-actions">
+                  <a href="/destinations/<%= item.id %>/<%= item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') %>" class="btn-outline admin-small-btn">View</a>
+                  <button type="submit" class="btn-outline admin-small-btn">Save</button>
+                </div>
+              </div>
+              <div class="admin-form-grid compact">
+                <select name="state_id" required>
+                  <% states.forEach(state => { %>
+                    <option value="<%= state.id %>" <%= state.id === item.state_id ? 'selected' : '' %>><%= state.name %></option>
+                  <% }) %>
+                </select>
+                <input name="name" value="<%= item.name %>" required>
+                <input name="location" value="<%= item.location || '' %>">
+                <select name="category">
+                  <% categories.forEach(category => { %>
+                    <option value="<%= category %>" <%= category === item.category ? 'selected' : '' %>><%= category %></option>
+                  <% }) %>
+                </select>
+                <input name="rating" type="number" min="0" max="5" step="0.1" value="<%= item.rating %>">
+                <input name="best_time" value="<%= item.best_time || '' %>">
+                <input name="entry_fee" value="<%= item.entry_fee || '' %>">
+                <input name="image_url" value="<%= item.image_url || '' %>">
+                <textarea name="description"><%= item.description || '' %></textarea>
+              </div>
+            </form>
+            <form action="/admin/destinations/<%= item.id %>/delete" method="POST" class="admin-delete-form">
+              <button type="submit" class="admin-delete-btn">Delete <%= item.name %></button>
+            </form>
+          <% }) %>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

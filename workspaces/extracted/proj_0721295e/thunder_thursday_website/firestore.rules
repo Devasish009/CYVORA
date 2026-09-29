@@ -1,0 +1,94 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if the user is logged in
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is editing their own document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 1. Users collection
+    // Students can read any user profile (for displaying team member info) but can only modify their own profile
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    // 2. Registrations & Participants collection
+    // Students can submit slot registrations and read registrations history
+    match /registrations/{registrationId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated();
+      allow delete: if false; // Deletion restricted to admins only
+    }
+    
+    match /participants/{participantId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    // 3. Performances collection (Live leaderboard/lineup data)
+    // Read-only for student public; writes restricted to admin portal/backend
+    match /performances/{performanceId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 4. Votes collection
+    // Double-voting prevention: users can only write documents matching their auth UID
+    match /votes/{voteId} {
+      allow read: if isAuthenticated();
+      // Ensure voteId matches request.auth.uid + "_" + performanceId
+      allow create, update: if isAuthenticated() 
+        && voteId.startsWith(request.auth.uid + "_");
+      allow delete: if false;
+    }
+
+    // 5. Event Feedbacks & General Feedbacks
+    // Students can submit feedback and read the feedback timeline
+    match /event_feedback/{feedbackId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+    
+    match /general_feedbacks/{feedbackId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // 6. Highlights & Gallery Images
+    // Read-only for everyone; writes restricted to admin portal
+    match /highlights/{highlightId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    match /gallery_images/{imageId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 7. Notifications
+    // Read-only for students; writes restricted to admin portal/backend
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // 8. Settings (toggles, feedback toggle status, etc.)
+    // Read-only for students; writes restricted to admin portal
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

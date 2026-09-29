@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 – Page Not Found | TravelBharat</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .page-404 {
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center;
+      background: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80') center/cover;
+      position: relative;
+    }
+    .page-404::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.6);
+    }
+    .page-404 .content {
+      position: relative; z-index: 10;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 28px; padding: 60px 50px;
+    }
+    .page-404 h1 { font-size: 6rem; color: var(--gold); }
+    .page-404 p { font-size: 1.2rem; color: var(--white-muted); margin: 10px 0 30px; }
+    .page-404 a {
+      padding: 14px 32px; background: linear-gradient(135deg, #FFD700, #F5A623);
+      color: #1a1a1a; border-radius: 12px; font-weight: 700; font-family: var(--font-heading);
+      transition: all 0.3s;
+    }
+    .page-404 a:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,215,0,0.3); }
+  </style>
+</head>
+<body>
+  <div class="page-404">
+    <div class="content">
+      <h1>404</h1>
+      <p>Oops! This destination doesn't exist on our map.</p>
+      <a href="/home">← Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>

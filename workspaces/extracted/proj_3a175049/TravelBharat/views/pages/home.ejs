@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelBharat – Discover the Soul of India</title>
+  <meta name="description" content="Explore 28 states and 8 union territories of India. Discover stunning temples, mountains, beaches, and heritage sites.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+
+    <%- include('../partials/navbar', { active: 'home' }) %>
+
+    <!-- Flash Messages -->
+    <% if (success) { %>
+      <div class="flash-toast success" id="flashToast">✅ <%= success %></div>
+    <% } %>
+    <% if (error) { %>
+      <div class="flash-toast error" id="flashToast">⚠️ <%= error %></div>
+    <% } %>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+      <div class="hero-bg"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80" alt="India Gate" id="heroBg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge">✨ Your Gateway to Incredible India</div>
+        <h1>Discover the <span class="highlight">Soul of India</span></h1>
+        <p>From the snow-capped Himalayas to the serene backwaters of Kerala, explore curated destinations across every corner of India.</p>
+        
+        <div class="hero-search-wrapper">
+          <form class="hero-search" action="/explore" method="GET" autocomplete="off">
+            <div class="search-input-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" name="q" placeholder="Search destinations, states, temples..." id="heroSearch">
+            </div>
+            <button type="submit" class="search-btn">Discover</button>
+          </form>
+          <div class="search-suggestions" id="heroSuggestions"></div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="h-stat"><span>36</span> <small>States & UTs</small></div>
+          <div class="h-stat"><span>100+</span> <small>Destinations</small></div>
+          <div class="h-stat"><span>6</span> <small>Travel Themes</small></div>
+        </div>
+      </div>
+
+      <a href="#interactiveMap" class="hero-scroll-hint">
+        <span>Explore Down</span>
+        <div class="mouse-icon"><div class="wheel"></div></div>
+      </a>
+    </section>
+
+    <!-- Interactive Map Section -->
+    <section class="section map-section" id="interactiveMap">
+      <div class="section-bg" style="background: #050810;"></div>
+      <div class="section-content">
+        <div class="map-layout">
+          <div class="map-info">
+            <span class="label">Interactive</span>
+            <h2>India's <span class="colored">Geography</span></h2>
+            <p>Hover over the map to discover states and click to explore their unique culture, heritage, and destinations.</p>
+            
+            <div class="map-legend">
+              <div class="legend-item"><span class="dot state"></span> <span>States</span></div>
+              <div class="legend-item"><span class="dot ut"></span> <span>Union Territories</span></div>
+              <div class="legend-item"><span class="dot city"></span> <span>Major Hubs</span></div>
+            </div>
+
+            <div id="statePreview" class="state-preview-card glass">
+              <h3 id="previewName">Select a State</h3>
+              <p id="previewDetail">Hover over the map to see quick facts.</p>
+              <a href="/states" id="previewLink" class="preview-btn">Explore Details →</a>
+            </div>
+          </div>
+
+          <div class="map-visual">
+            <div class="india-map-wrapper" id="homeMap">
+              <div id="homeMapHolder"></div>
+              <!-- Tooltip -->
+              <div id="mapTooltip" class="map-tooltip"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured States -->
+    <section class="section" id="featuredStates">
+      <div class="section-bg">
+        <img src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1920&q=80" alt="Indian landscape">
+        <div class="section-bg-overlay"></div>
+      </div>
+      <div class="section-content">
+        <div class="section-header">
+          <span class="label">Explore</span>
+          <h2>Featured <span class="colored">States</span></h2>
+          <p>Handpicked states with the most breathtaking destinations</p>
+        </div>
+        <div class="states-carousel" id="statesCarousel">
+          <% featuredStates.forEach(s => { %>
+          <div class="state-card" onclick="window.location.href='/states/<%= s.slug || s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') %>'">
+            <img src="<%= s.image_url %>" alt="<%= s.name %>" data-fallback="/img/state-placeholder.svg">
+            <div class="state-card-overlay">
+              <div class="state-card-glass">
+                <h3><%= s.name %></h3>
+                <span class="capital">📍 Capital: <%= s.capital %></span>
+                <div class="dest-count"><%= s.destinations_count %>+ Destinations</div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <div style="text-align:center; margin-top:30px;">
+          <a href="/states" class="btn-gold">View All 36 States & UTs →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section class="section" id="popularDest">
+      <div class="section-bg">
+        <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=80" alt="Varanasi">
+        <div class="section-bg-overlay"></div>
+      </div>
+      <div class="section-content">
+        <div class="section-header">
+          <span class="label">Must Visit</span>
+          <h2>Popular <span class="colored">Destinations</span></h2>
+          <p>The most loved and visited places across India</p>
+        </div>
+        <div class="dest-grid">
+          <% popularDest.forEach(d => { %>
+          <a class="dest-card" href="<%= d.detailUrl %>">
+            <img src="<%= d.image_url %>" alt="<%= d.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+            <div class="dest-card-info">
+              <h4><%= d.name %></h4>
+              <span class="state-badge">📍 <%= d.state_name %></span>
+              <div class="category-tag"><%= d.category %></div>
+              <div class="dest-meta">
+                <span>⭐ <%= d.rating %></span>
+                <span>🌤️ <%= d.best_time %></span>
+              </div>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+        <div style="text-align:center; margin-top:30px;">
+          <a href="/explore" class="btn-gold">Explore All Destinations →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section" id="categories">
+      <div class="section-bg">
+        <img src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=1920&q=80" alt="Temple">
+        <div class="section-bg-overlay"></div>
+      </div>
+      <div class="section-content">
+        <div class="section-header">
+          <span class="label">Browse by</span>
+          <h2>Explore <span class="colored">Categories</span></h2>
+          <p>Find destinations by your travel interest</p>
+        </div>
+        <div class="categories-grid">
+          <a href="/categories/heritage" class="category-card">
+            <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=400&q=80" alt="Heritage">
+            <div class="category-card-content"><span class="cat-icon">🏛️</span><h3>Heritage</h3><span class="cat-count">Story-rich monuments</span></div>
+          </a>
+          <a href="/categories/nature" class="category-card">
+            <img src="https://images.unsplash.com/photo-1614797669031-9a59a2463579?w=400&q=80" alt="Nature">
+            <div class="category-card-content"><span class="cat-icon">🌿</span><h3>Nature</h3><span class="cat-count">Lakes, valleys and hills</span></div>
+          </a>
+          <a href="/categories/adventure" class="category-card">
+            <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=400&q=80" alt="Adventure">
+            <div class="category-card-content"><span class="cat-icon">⛰️</span><h3>Adventure</h3><span class="cat-count">Trails, rafting and snow</span></div>
+          </a>
+          <a href="/categories/religious" class="category-card">
+            <img src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400&q=80" alt="Religious">
+            <div class="category-card-content"><span class="cat-icon">🛕</span><h3>Religious</h3><span class="cat-count">Sacred journeys</span></div>
+          </a>
+          <a href="/categories/beach" class="category-card">
+            <img src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=400&q=80" alt="Beaches">
+            <div class="category-card-content"><span class="cat-icon">🏖️</span><h3>Beaches</h3><span class="cat-count">Coastal escapes</span></div>
+          </a>
+          <a href="/categories/wildlife" class="category-card">
+            <img src="https://images.unsplash.com/photo-1591122947157-4c54a4b9fdf1?w=400&q=80" alt="Wildlife">
+            <div class="category-card-content"><span class="cat-icon">🐯</span><h3>Wildlife</h3><span class="cat-count">National parks</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section" id="stats">
+      <div class="section-bg">
+        <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1920&q=80" alt="India Temple">
+        <div class="section-bg-overlay"></div>
+      </div>
+      <div class="section-content">
+        <div class="stats-bar">
+          <div class="stat-item glass"><div class="number" data-count="<%= stats.states %>">0</div><div class="label">States & UTs</div></div>
+          <div class="stat-item glass"><div class="number" data-count="<%= stats.destinations %>">0</div><div class="label">Destinations</div></div>
+          <div class="stat-item glass"><div class="number" data-count="<%= stats.galleryImages %>">0</div><div class="label">Gallery Photos</div></div>
+          <div class="stat-item glass"><div class="number" data-count="<%= stats.categories %>">0</div><div class="label">Categories</div></div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+  </div>
+
+  <script>
+    // Hero slideshow
+    const heroImages = [
+      'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80',
+      'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&q=80',
+      'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=80',
+      'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=1920&q=80',
+      'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=1920&q=80',
+    ];
+    let heroIdx = 0;
+    const heroBg = document.getElementById('heroBg');
+    heroBg.style.transition = 'opacity 0.8s ease';
+    setInterval(() => {
+      heroIdx = (heroIdx + 1) % heroImages.length;
+      heroBg.style.opacity = 0;
+      setTimeout(() => { heroBg.src = heroImages[heroIdx]; heroBg.onload = () => heroBg.style.opacity = 1; }, 600);
+    }, 6000);
+
+    // Counter animation
+    const counters = document.querySelectorAll('.number[data-count]');
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.count);
+          let current = 0;
+          const inc = target / 60;
+          const timer = setInterval(() => {
+            current = Math.min(current + inc, target);
+            entry.target.textContent = Math.floor(current) + '+';
+            if (current >= target) clearInterval(timer);
+          }, 30);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.state-card, .dest-card, .category-card, .stat-item');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => { entry.target.style.opacity='1'; entry.target.style.transform='translateY(0)'; }, i*100);
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => {
+      el.style.opacity = '0'; el.style.transform = 'translateY(30px)';
+      el.style.transition = 'all 0.6s cubic-bezier(0.4,0,0.2,1)';
+      revealObs.observe(el);
+    });
+
+    // Flash toast auto-hide
+    const toast = document.getElementById('flashToast');
+    if (toast) { setTimeout(() => toast.classList.add('hide'), 4000); }
+
+    // Search suggestions
+    const heroSearch = document.getElementById('heroSearch');
+    const heroSuggestions = document.getElementById('heroSuggestions');
+    let suggestionTimer;
+
+    function renderSuggestions(items) {
+      if (!heroSuggestions) return;
+      if (!items.length) {
+        heroSuggestions.classList.remove('visible');
+        heroSuggestions.innerHTML = '';
+        return;
+      }
+      heroSuggestions.innerHTML = items.map(item =>
+        `<a href="${item.url}" class="search-suggestion-item"><span>${item.label}</span><small>${item.type}</small></a>`
+      ).join('');
+      heroSuggestions.classList.add('visible');
+    }
+
+    heroSearch?.addEventListener('input', () => {
+      clearTimeout(suggestionTimer);
+      const q = heroSearch.value.trim();
+      if (q.length < 2) {
+        renderSuggestions([]);
+        return;
+      }
+      suggestionTimer = setTimeout(async () => {
+        try {
+          const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(q)}`);
+          const data = await response.json();
+          renderSuggestions(data.suggestions || []);
+        } catch {
+          renderSuggestions([]);
+        }
+      }, 180);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!heroSuggestions?.contains(event.target) && event.target !== heroSearch) {
+        renderSuggestions([]);
+      }
+    });
+
+    // Home Interactive Map Logic
+    const homeMapHolder = document.getElementById('homeMapHolder');
+    const mapTooltip = document.getElementById('mapTooltip');
+    const previewName = document.getElementById('previewName');
+    const previewDetail = document.getElementById('previewDetail');
+    const previewLink = document.getElementById('previewLink');
+
+    const stateData = {
+      ap: { name: 'Andhra Pradesh', info: 'Coastal state with ancient temples, beaches, and the scenic Araku Valley.' },
+      ar: { name: 'Arunachal Pradesh', info: 'Northeast frontier of misty mountains, monasteries, and wild valleys.' },
+      as: { name: 'Assam', info: 'Land of rhinos, tea estates, river islands, and colourful Brahmaputra culture.' },
+      br: { name: 'Bihar', info: 'Historic land of Buddhism, ancient universities and sacred pilgrimage sites.' },
+      ch: { name: 'Chandigarh', info: 'Planned modern city known for gardens, clean streets, and Le Corbusier architecture.' },
+      ct: { name: 'Chhattisgarh', info: 'Dense forest state with waterfalls, tribal culture, and ancient temple ruins.' },
+      dd: { name: 'Dadra and Nagar Haveli and Daman and Diu', info: 'Coastal UT of Portuguese forts, beaches, and quiet island vibes.' },
+      dl: { name: 'Delhi', info: 'India’s capital region, blending Mughal monuments, museums, and busy bazaars.' },
+      dn: { name: 'Dadra and Nagar Haveli and Daman and Diu', info: 'Coastal UT of Portuguese forts, beaches, and quiet island vibes.' },
+      ga: { name: 'Goa', info: 'Beach paradise famous for nightlife, seafood, old churches, and coastal charm.' },
+      gj: { name: 'Gujarat', info: 'State of Gandhi, the white salt desert, Asiatic lions, and vibrant handicrafts.' },
+      hp: { name: 'Himachal Pradesh', info: 'Hill state of snow peaks, apple orchards, snow sports, and peaceful valleys.' },
+      hr: { name: 'Haryana', info: 'Agricultural heartland with Kurukshetra, heritage villages, and modern cities.' },
+      jh: { name: 'Jharkhand', info: 'Forest and waterfall state with tribal heritage, wildlife and mineral valleys.' },
+      jk: { name: 'Jammu and Kashmir', info: 'Heavenly valley and mountain UT with lakes, shrines, and winter adventures.' },
+      ka: { name: 'Karnataka', info: 'South Indian state with ancient ruins, silk cities, hill stations and coast.' },
+      kl: { name: 'Kerala', info: 'Backwater state of spice gardens, houseboats, wildlife, and Ayurveda retreats.' },
+      mh: { name: 'Maharashtra', info: 'Western state of Mumbai, hill stations, historic caves and coastal beaches.' },
+      ml: { name: 'Meghalaya', info: 'Abode of clouds famed for waterfalls, root bridges, and living landscapes.' },
+      mn: { name: 'Manipur', info: 'Northeast state of dancing culture, Loktak Lake, and serene hill forests.' },
+      mp: { name: 'Madhya Pradesh', info: 'Central India with temples, tiger reserves, historic forts, and caves.' },
+      mz: { name: 'Mizoram', info: 'Hill state of bamboo forests, blue lakes, and rich Mizo traditions.' },
+      nl: { name: 'Nagaland', info: 'Festival-rich state with tribal villages, mountain treks, and hornbill heritage.' },
+      or: { name: 'Odisha', info: 'Eastern state of temples, Sun Temple, beaches, and coastal wildlife.' },
+      pb: { name: 'Punjab', info: 'Land of five rivers with the Golden Temple, vibrant culture, and hearty food.' },
+      py: { name: 'Puducherry', info: 'French-inspired UT with boulevards, ashrams, and laid-back seaside cafes.' },
+      rj: { name: 'Rajasthan', info: 'Royal state of forts, palaces, desert safaris, and colourful culture.' },
+      sk: { name: 'Sikkim', info: 'Small Himalayan state with monasteries, tea gardens, and Kanchenjunga views.' },
+      tg: { name: 'Telangana', info: 'Pearl city state with Charminar, forts, lakes, and biryani culture.' },
+      tn: { name: 'Tamil Nadu', info: 'South Indian state of temples, classical arts, hill stations and coastal towns.' },
+      tr: { name: 'Tripura', info: 'Northeast state with palaces, lakes, tribal culture, and quiet forests.' },
+      up: { name: 'Uttar Pradesh', info: 'Spiritual heartland with the Taj Mahal, Varanasi ghats, and pilgrimage cities.' },
+      ut: { name: 'Uttarakhand', info: 'Devbhoomi with Himalayan treks, pilgrimage routes and river adventures.' },
+      wb: { name: 'West Bengal', info: 'Cultural state of Kolkata, sundarbans, Darjeeling, and colonial charm.' },
+    };
+
+    fetch('/img/india-map.svg')
+      .then(r => r.text())
+      .then(svg => {
+        if (!homeMapHolder) return;
+        homeMapHolder.innerHTML = svg;
+        const svgEl = homeMapHolder.querySelector('svg');
+        const paths = homeMapHolder.querySelectorAll('path');
+        
+        const cityPoints = [
+          { name: 'Srinagar', cx: 132, cy: 70, color: '#38BDF8' },
+          { name: 'Shimla / Manali', cx: 185, cy: 142, color: '#34D399' },
+          { name: 'Amritsar', cx: 140, cy: 145, color: '#F59E0B' },
+          { name: 'Dehradun / Rishikesh', cx: 218, cy: 172, color: '#F43F5E' },
+          { name: 'Delhi (NCR)', cx: 186, cy: 210, color: '#FF6B6B' },
+          { name: 'Jaipur', cx: 158, cy: 235, color: '#FBBF24' },
+          { name: 'Ahmedabad', cx: 92, cy: 342, color: '#EC4899' },
+          { name: 'Agra', cx: 200, cy: 232, color: '#FF6B6B' },
+          { name: 'Lucknow', cx: 265, cy: 245, color: '#56CCF2' },
+          { name: 'Varanasi', cx: 315, cy: 272, color: '#F59E0B' },
+          { name: 'Bhopal', cx: 215, cy: 320, color: '#8B5CF6' },
+          { name: 'Patna', cx: 365, cy: 270, color: '#6366F1' },
+          { name: 'Ranchi', cx: 360, cy: 330, color: '#14B8A6' },
+          { name: 'Raipur', cx: 295, cy: 385, color: '#10B981' },
+          { name: 'Kolkata', cx: 412, cy: 348, color: '#20E3B2' },
+          { name: 'Bhubaneswar / Puri', cx: 362, cy: 412, color: '#06B6D4' },
+          { name: 'Guwahati', cx: 480, cy: 260, color: '#FF6B6B' },
+          { name: 'Shillong', cx: 484, cy: 283, color: '#38BDF8' },
+          { name: 'Gangtok', cx: 425, cy: 235, color: '#A855F7' },
+          { name: 'Itanagar / Tawang', cx: 535, cy: 225, color: '#FB923C' },
+          { name: 'Mumbai', cx: 112, cy: 435, color: '#FBBF24' },
+          { name: 'Panaji (Goa)', cx: 122, cy: 512, color: '#EAB308' },
+          { name: 'Hyderabad', cx: 237, cy: 457, color: '#56CCF2' },
+          { name: 'Visakhapatnam', cx: 295, cy: 470, color: '#F97316' },
+          { name: 'Tirupati', cx: 235, cy: 545, color: '#EAB308' },
+          { name: 'Bengaluru', cx: 195, cy: 555, color: '#A855F7' },
+          { name: 'Chennai', cx: 245, cy: 565, color: '#FFD700' },
+          { name: 'Kochi', cx: 166, cy: 615, color: '#FB7185' }
+        ];
+
+        if (svgEl) {
+          cityPoints.forEach(city => {
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('cx', city.cx);
+            dot.setAttribute('cy', city.cy);
+            dot.setAttribute('r', '6');
+            dot.setAttribute('fill', city.color);
+            dot.setAttribute('stroke', '#ffffff');
+            dot.setAttribute('stroke-width', '1.5');
+            dot.style.cursor = 'pointer';
+            dot.style.transition = 'transform 0.2s ease, filter 0.2s ease';
+            
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = city.name;
+            dot.appendChild(title);
+            
+            dot.addEventListener('mouseenter', () => {
+              dot.setAttribute('r', '8');
+              mapTooltip.textContent = '📍 ' + city.name;
+              mapTooltip.style.opacity = '1';
+            });
+            dot.addEventListener('mouseleave', () => {
+              dot.setAttribute('r', '6');
+              mapTooltip.style.opacity = '0';
+            });
+            svgEl.appendChild(dot);
+          });
+        }
+
+        paths.forEach(path => {
+          const id = path.id;
+          const data = stateData[id] || { name: id.toUpperCase(), info: 'Explore the hidden gems of this region.' };
+          
+          path.style.opacity = '1';
+          path.style.fill = 'rgba(255, 255, 255, 0.05)';
+          path.style.transition = 'all 0.3s ease';
+          path.style.cursor = 'pointer';
+
+          path.addEventListener('mouseenter', (e) => {
+            path.style.fill = 'rgba(255, 215, 0, 0.2)';
+            path.style.stroke = '#FFD700';
+            path.style.strokeWidth = '2';
+            
+            // Tooltip
+            mapTooltip.textContent = data.name;
+            mapTooltip.style.opacity = '1';
+            
+            // Preview Card
+            previewName.textContent = data.name;
+            previewDetail.textContent = data.info;
+            previewLink.href = `/states/${data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+          });
+
+          path.addEventListener('mousemove', (e) => {
+            const rect = homeMapHolder.getBoundingClientRect();
+            mapTooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+            mapTooltip.style.top = (e.clientY - rect.top - 40) + 'px';
+          });
+
+          path.addEventListener('mouseleave', () => {
+            path.style.fill = 'rgba(255, 255, 255, 0.05)';
+            path.style.stroke = '#FFD700';
+            path.style.strokeWidth = '0.8';
+            mapTooltip.style.opacity = '0';
+          });
+
+          path.addEventListener('click', () => {
+            window.location.href = `/states/${data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+          });
+        });
+      });
+  </script>
+</body>
+</html>

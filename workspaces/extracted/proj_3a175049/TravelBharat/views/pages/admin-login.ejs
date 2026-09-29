@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - TravelBharat</title>
+  <meta name="description" content="Admin access for TravelBharat content management.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-bg">
+      <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80" alt="India" />
+    </div>
+    <div class="login-bg-overlay"></div>
+    <div class="login-card">
+      <div class="logo">
+        <span class="india-icon">TB</span>
+        <h2><span class="travel">Travel</span><span class="bharat">Bharat</span></h2>
+      </div>
+      <h3>Admin Sign In</h3>
+      <p class="subtitle">Manage states, destinations, gallery entries, and category coverage.</p>
+
+      <% if (error) { %>
+        <div class="auth-alert error"><%= error %></div>
+      <% } %>
+      <% if (success) { %>
+        <div class="auth-alert success"><%= success %></div>
+      <% } %>
+
+      <form class="login-form" action="/admin/login" method="POST">
+        <div class="input-group">
+          <label for="username">Username or Email</label>
+          <input type="text" id="username" name="username" required>
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn-login">Open Dashboard</button>
+      </form>
+      <div class="login-footer">
+        <p><a href="/login">Go to public login</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

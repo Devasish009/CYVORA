@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - TravelBharat</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="admin-page">
+    <%- include('../partials/admin-nav', { active: 'dashboard' }) %>
+
+    <main class="admin-shell">
+      <section class="admin-header">
+        <div>
+          <span class="label">Control Center</span>
+          <h1>TravelBharat Dashboard</h1>
+          <p>Monitor content coverage and jump into the main management modules.</p>
+        </div>
+      </section>
+
+      <% if (success) { %><div class="auth-alert success"><%= success %></div><% } %>
+      <% if (error) { %><div class="auth-alert error"><%= error %></div><% } %>
+
+      <section class="admin-stats-grid">
+        <article class="admin-stat-card glass">
+          <span class="label">Coverage</span>
+          <h2><%= stats.states %></h2>
+          <p>States and union territories</p>
+        </article>
+        <article class="admin-stat-card glass">
+          <span class="label">Content</span>
+          <h2><%= stats.destinations %></h2>
+          <p>Destinations available</p>
+        </article>
+        <article class="admin-stat-card glass">
+          <span class="label">Taxonomy</span>
+          <h2><%= stats.categories %></h2>
+          <p>Destination categories in use</p>
+        </article>
+        <article class="admin-stat-card glass">
+          <span class="label">Media</span>
+          <h2><%= stats.galleryImages %></h2>
+          <p>Gallery assets published</p>
+        </article>
+      </section>
+
+      <section class="admin-links-grid">
+        <a href="/admin/states" class="admin-shortcut glass">
+          <h3>Manage States</h3>
+          <p>Create and update state cards, facts, and regional metadata.</p>
+        </a>
+        <a href="/admin/destinations" class="admin-shortcut glass">
+          <h3>Manage Destinations</h3>
+          <p>Add, edit, and remove destination pages with category tags.</p>
+        </a>
+        <a href="/admin/gallery" class="admin-shortcut glass">
+          <h3>Manage Gallery</h3>
+          <p>Publish visual assets used across gallery and detail pages.</p>
+        </a>
+        <a href="/admin/categories" class="admin-shortcut glass">
+          <h3>Category Coverage</h3>
+          <p>See how the six travel themes are populated right now.</p>
+        </a>
+      </section>
+
+      <section class="admin-grid-two">
+        <div class="admin-panel glass">
+          <div class="admin-panel-head">
+            <h2>Recent Destinations</h2>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>State</th>
+                  <th>Category</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentDestinations.forEach(item => { %>
+                  <tr>
+                    <td><a href="/destinations/<%= item.id %>/<%= item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') %>"><%= item.name %></a></td>
+                    <td><%= item.state_name %></td>
+                    <td><%= item.category %></td>
+                    <td><%= item.rating %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-panel glass">
+          <div class="admin-panel-head">
+            <h2>Recent Users</h2>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentUsers.forEach(item => { %>
+                  <tr>
+                    <td><%= item.full_name %></td>
+                    <td><%= item.username %></td>
+                    <td><%= item.role %></td>
+                    <td><%= new Date(item.created_at).toLocaleDateString('en-IN') %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

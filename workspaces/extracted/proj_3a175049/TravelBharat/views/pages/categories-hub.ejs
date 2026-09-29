@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories - TravelBharat</title>
+  <meta name="description" content="Browse Indian destinations by heritage, nature, adventure, religious, beach, and wildlife categories.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="home-page">
+    <%- include('../partials/navbar', { active: 'categories' }) %>
+
+    <section class="page-hero" style="background-image:url('https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=1920&q=80');">
+      <div class="page-hero-overlay"></div>
+      <div class="page-hero-content">
+        <span class="label">Browse by Interest</span>
+        <h1>Travel <span class="colored">Categories</span></h1>
+        <p>Choose the kind of India experience you want to explore next.</p>
+      </div>
+    </section>
+
+    <div class="subpage-content">
+      <div class="cat-nav-pills">
+        <a href="#heritage" class="cat-pill">Heritage</a>
+        <a href="#nature" class="cat-pill">Nature</a>
+        <a href="#adventure" class="cat-pill">Adventure</a>
+        <a href="#religious" class="cat-pill">Religious</a>
+        <a href="#beach" class="cat-pill">Beach</a>
+        <a href="#wildlife" class="cat-pill">Wildlife</a>
+      </div>
+
+      <%
+        const catConfig = {
+          Heritage:  { color: '#F5A623', id: 'heritage'  },
+          Nature:    { color: '#20E3B2', id: 'nature'    },
+          Adventure: { color: '#56CCF2', id: 'adventure' },
+          Religious: { color: '#FFD700', id: 'religious' },
+          Beach:     { color: '#FB7185', id: 'beach'     },
+          Wildlife:  { color: '#A855F7', id: 'wildlife'  }
+        };
+      %>
+
+      <% categories.forEach(cat => {
+        const cfg = catConfig[cat];
+        const items = categoryData[cat] || [];
+      %>
+        <div class="cat-section" id="<%= cfg.id %>">
+          <div class="cat-section-header" style="border-left:4px solid <%= cfg.color %>;">
+            <div>
+              <h2 style="color:<%= cfg.color %>"><%= cat %></h2>
+              <p><%= items.length %> destinations across India</p>
+            </div>
+            <a href="/categories/<%= cat.toLowerCase() %>" class="view-all-link">View All -></a>
+          </div>
+
+          <div class="dest-grid cat-dest-grid">
+            <% if (items.length === 0) { %>
+              <p class="no-cat-data">No destinations yet for this category.</p>
+            <% } else { %>
+              <% items.forEach(d => { %>
+                <a class="dest-card" href="<%= d.detailUrl %>">
+                  <img src="<%= d.image_url %>" alt="<%= d.name %>" loading="lazy" data-fallback="/img/dest-placeholder.svg">
+                  <div class="dest-card-info">
+                    <h4><%= d.name %></h4>
+                    <span class="state-badge"><%= d.state_name %></span>
+                    <div class="category-tag" style="background:rgba(0,0,0,0.3);color:<%= cfg.color %>;border:1px solid <%= cfg.color %>44;"><%= cat %></div>
+                    <div class="dest-meta">
+                      <span>Best: <%= d.best_time || 'Flexible' %></span>
+                      <span>Rating: <%= d.rating || 'N/A' %></span>
+                    </div>
+                    <% if (d.entry_fee) { %>
+                      <span class="dest-fee">Entry: <%= d.entry_fee %></span>
+                    <% } %>
+                  </div>
+                </a>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </div>
+</body>
+</html>

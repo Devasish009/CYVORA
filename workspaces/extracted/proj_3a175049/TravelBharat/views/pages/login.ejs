@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – TravelBharat</title>
+  <meta name="description" content="Sign in to TravelBharat to explore incredible destinations across India.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-bg">
+      <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&q=80" alt="Taj Mahal" id="loginBg">
+    </div>
+    <div class="login-bg-overlay"></div>
+    <div class="login-card" id="loginCard">
+      <div class="logo">
+        <span class="india-icon">🇮🇳</span>
+        <h2><span class="travel">Travel</span><span class="bharat">Bharat</span></h2>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Flash messages -->
+      <% if (error) { %>
+        <div class="auth-alert error">⚠️ <%= error %></div>
+      <% } %>
+      <% if (success) { %>
+        <div class="auth-alert success">✅ <%= success %></div>
+      <% } %>
+
+      <!-- LOGIN FORM -->
+      <div id="loginPanel">
+        <h3>Welcome Back</h3>
+        <p class="subtitle">Sign in to explore incredible India</p>
+        <form class="login-form" action="/auth/login" method="POST">
+          <div class="input-group">
+            <label for="username">Username or Email</label>
+            <span class="icon">👤</span>
+            <input type="text" id="username" name="username" placeholder="Enter username or email" required autocomplete="username">
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <span class="icon">🔒</span>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+            <span class="toggle-pw" onclick="togglePw('password')" title="Show/hide">👁️</span>
+          </div>
+          <div class="remember-row">
+            <label><input type="checkbox" name="remember"> Remember me</label>
+            <span class="help-text">Forgot password?</span>
+          </div>
+          <button type="submit" class="btn-login" id="btnLogin">Sign In →</button>
+        </form>
+        <div class="login-footer">
+          <p>New explorer? <a href="/login?tab=register" onclick="switchTab('register')">Create Account</a></p>
+        </div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="registerPanel" style="display:none;">
+        <h3>Join TravelBharat</h3>
+        <p class="subtitle">Create your free account today</p>
+        <form class="login-form" action="/auth/register" method="POST">
+          <div class="input-group">
+            <label for="full_name">Full Name</label>
+            <span class="icon">🙍</span>
+            <input type="text" id="full_name" name="full_name" placeholder="Your full name" required>
+          </div>
+          <div class="input-group">
+            <label for="reg_email">Email</label>
+            <span class="icon">📧</span>
+            <input type="email" id="reg_email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="input-group">
+            <label for="reg_username">Username</label>
+            <span class="icon">👤</span>
+            <input type="text" id="reg_username" name="username" placeholder="Choose a username" required>
+          </div>
+          <div class="input-group">
+            <label for="reg_password">Password</label>
+            <span class="icon">🔒</span>
+            <input type="password" id="reg_password" name="password" placeholder="Min 6 characters" required>
+            <span class="toggle-pw" onclick="togglePw('reg_password')" title="Show/hide">👁️</span>
+          </div>
+          <div class="input-group">
+            <label for="confirm_password">Confirm Password</label>
+            <span class="icon">🔒</span>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat password" required>
+          </div>
+          <button type="submit" class="btn-login">Create Account 🚀</button>
+        </form>
+        <div class="login-footer">
+          <p>Already have an account? <a href="/login?tab=login" onclick="switchTab('login')">Sign In</a></p>
+        </div>
+      </div>
+
+    </div><!-- /login-card -->
+  </div>
+
+  <script>
+    // Background slideshow
+    const backgrounds = [
+      'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&q=80',
+      'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=80',
+      'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=80',
+      'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=1920&q=80',
+      'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=1920&q=80',
+    ];
+    let bgIndex = 0;
+    const loginBg = document.getElementById('loginBg');
+    loginBg.style.transition = 'opacity 0.8s ease';
+    setInterval(() => {
+      bgIndex = (bgIndex + 1) % backgrounds.length;
+      loginBg.style.opacity = 0;
+      setTimeout(() => {
+        loginBg.src = backgrounds[bgIndex];
+        loginBg.onload = () => { loginBg.style.opacity = 1; };
+      }, 500);
+    }, 5000);
+
+    // Tab switching
+    function switchTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('loginPanel').style.display    = isLogin ? 'block' : 'none';
+      document.getElementById('registerPanel').style.display = isLogin ? 'none'  : 'block';
+      document.getElementById('tabLogin').classList.toggle('active', isLogin);
+      document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+    }
+
+    // Show/hide password
+    function togglePw(id) {
+      const el = document.getElementById(id);
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    // Auto-switch to the correct tab based on server hint
+    const initialTab = '<%= typeof tab !== "undefined" ? tab : "login" %>';
+    if (initialTab === 'register') switchTab('register');
+  </script>
+</body>
+</html>
